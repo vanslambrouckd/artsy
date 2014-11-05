@@ -5,9 +5,10 @@ fdqs
 f
 dqs
 <link rel="stylesheet" href="css/style.css" type="text/css" />
-<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="http://underscorejs.org/underscore-min.js"></script>
-<script src="http://backbonejs.org/backbone-min.js"></script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="js/backbone.paginator.js"></script>
 <script src="js/vendor/backbone.marionette/backbone.marionette.min.js"></script>
  
   <script src="js/frontend/ui.js"></script>
@@ -20,7 +21,6 @@ dqs
 <script src="js/views/artist.js"></script>
 <script>
    $(document).ready(function() {
-   
    
 
    var app = {
@@ -39,13 +39,51 @@ dqs
         //  console.log(data);
         });  
       */  
-      var Boek = Backbone.Model.extend({
+      var Book = Backbone.Model.extend({
 
       });
 
-      boek = new Boek();
-      boek.set('titel', 'nieuw boek');
-      console.log(boek);
+      /*https://github.com/backbone-paginator/backbone.paginator#browser*/
+     var BooksCollection = Backbone.PageableCollection.extend({
+        state: {
+          firstPage: 0,
+          currentPage: 0,
+          totalRecords: 500,
+        },
+        queryParams: {
+          currentPage: "current_page",
+          pageSize: "page_size"
+        }
+     });
+
+     var books = [];
+    for (x = 0; x < 1000; x++) {
+        var book = new Book();
+        book.set('titel', 'nieuw boek' + x);
+        books.push(book);
+      }
+     var myBooks = new BooksCollection(books, { mode: 'client'});
+
+      console.log(JSON.stringify(myBooks.getFirstPage()));      
+     console.log(JSON.stringify(myBooks.getNextPage()));
+     console.log(JSON.stringify(myBooks.getNextPage()));
+     console.log(JSON.stringify(myBooks.getLastPage()));
+     // console.log(myBooks);
+
+      var BooksListView = Backbone.View.extend({
+          model: Book,
+          render: function() {
+            var view = this.collection.map(function(book) {
+                //console.log(book);
+                return '<div>'+book.get('titel')+'</div>';
+            });
+            $(this.el).html(view);
+            return this;
+          }
+      });
+
+      booksListView = new BooksListView({ el: $('#booksList'), collection: myBooks.getLastPage() });
+      booksListView.render();
 
         var artists = new App.Artists;
         //art.id  = '4d8b92b34eb68a1b2c0003f4';
@@ -81,6 +119,8 @@ dqs
    });
  </script>
 
+<div id="booksList">
+</div>
 
  <ul id="artistsList">
  </ul>
