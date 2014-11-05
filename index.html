@@ -14,82 +14,20 @@ dqs
 
  
 <script src="js/pubsub.js"></script>
+<script src="js/api.js"></script>
 <script src="js/app.js"></script>
-<script src="js/frontend/models/movie.js"></script>
- <script src="views/listviewitem.js"></script>
- <script src="views/listview.js"></script>
- <script src="views/listview.js"></script>
-<script src="js/frontend/controllers/home.js"></script>
-<script src="js/frontend/controllers/movie.js"></script>
-
-<script src="js/router.js"></script>
+<script src="js/models/artist.js"></script>
 
 <script>
    $(document).ready(function() {
    
-   var api = {
-    authOpts: {},
-    authData: {},
-    request: function(options) {
-      api.authOpts.client_id = '239e0993efd9b7643025';
-      api.authOpts.client_secret = 'bc0dc779f00f6e5f3338dc763ebd1324';
-      var defaults = {
-        dataType: 'json'
-      };
+   
 
-      var settings = $.extend(defaults, options);
-      var self = this;
-      
-      var ret = $.ajax(settings).fail(function(jqXHR, e) {
-          console.log(jqXHR.status);
-          if (jqXHR.status == 401) {
-            //authentication error
-
-            
-            self.authenticate().success(function(data) {
-                self.authData = data;
-                $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
-                  jqXHR.setRequestHeader("X-XAPP-TOKEN", self.authData.token);
-                });
-                //console.log(self.authData);
-                console.log(settings);
-                $.ajax(settings);
-            });
-
-          }
-      });
-
-      return ret;
-    },
-    authenticate: function() {
-      var self = this;
-      console.log(self.authOpts);
-
-      var req = api.request({
-          type: 'POST',
-          url: 'https://api.artsy.net/api/tokens/xapp_token',
-          dataType: 'json',
-          data: self.authOpts
-      });
-
-      return req;
-      /*
-      req.done(function(data) {
-        PubSub.publish('auth.loggedIn', data);
-      });
-*/
-    }    
-   }
-
-   var site = {
+   var app = {
       init: function() {
         //PubSub.subscribe('auth.loggedIn', site.setToken); 
 
         /*
-        api.authenticate().done(function(data) {
-            console.log(data);
-        });
-*/
         var res = api.request({
           type: 'GET',
           dataType: 'json',
@@ -99,140 +37,30 @@ dqs
 
         res.done(function(data) {
         //  console.log(data);
-        });   
-           
+        });  
+      */  
+
+        var artists = new App.Artists;
+        
+        
+        var art = new App.Artist({ id: '52c721e5b202a3edf1000072'});
+        art.id  = '52c721e5b202a3edf1000072';
+        artists.fetch({
+          success: function() {
+            console.log(artists.models);
+            console.log(artists.length);
+          }
+        });
+
+        art.fetch({
+          success: function() {
+            console.log(art.id);
+          }
+        });
       }
    }    
-  site.init();
-   /*
-   
-*/
-    /*
-     * check if token is expired every time a new ajax request is made
-     * if it is expired, aborts the current requests, updated the token
-     * and eventually does the original request again.
-     */
-
-
-      //xhr.setRequestHeader("X-XAPP-TOKEN", data.token);
-    
-    /*
-    var req = $.ajax({
-        type: 'POST',
-        url: 'https://api.artsy.net/api/tokens/xapp_token',
-        dataType: 'json',
-        data: opts
-    });
-
-    var auth = {};
-    req.done(function(data) {
-     
-      $(document).ajaxSend(function(e, xhr, options) {
-        xhr.setRequestHeader("X-XAPP-TOKEN", data.token);
-      });
-
-      var res = $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        url: 'https://api.artsy.net/api/artists/4d8b92b34eb68a1b2c0003f4'
-        //data: auth
-      });
-
-      res.done(function(data) {
-        console.log(data);
-      });
-    });
-    */
-    
-
-   		var Boek = Backbone.Model.extend({
-
-   		});
-
-   		/*
-   		var boek1 = new Boek();
-   		boek1.set('titel', 'david');
-
-		var boek2 = new Boek();
-   		boek2.set('titel', 'delphine');
-		*/
-
-   		var Lijst = Backbone.Collection.extend({
-   			url: 'http://yts.re/api/list.json?limit=50',
-   			model: Boek,
-   			parse: function(data) {
-   				//return data.MovieList;
-   				
-   				var boeken = [];
-   				
-   				$.each(data.MovieList, function(i, boek) {
-					boeken.push(boek);
-   				});
-				return boeken;
-							
-   			}
-   		});
-
-
-   		var lijstje = new Lijst();
-   		lijstje.fetch({
-   			success: function(collection, response, options) {
-   				/*
-   				console.log('ja');
-   				console.log(collection);
-
-   				var res = lijstje.findWhere({MovieTitle: 'Candy (2006) 1080p'});
-   				console.log(res.get('MovieTitle'));
-   				*/
-   			},
-   			error: function(collection, response, options) {
-   				console.log('nee');
-
-   			}
-   		});
-   		/*
-   		lijstje.add(boek1);
-   		lijstje.add(boek2);
-		*/
-
-    //console.log(lijstje.get(1));
-    /*
-
-        var col = new App.Model.MovieCollection();
-        col.fetch({
-   			success: function(collection, response, options) {
-   				
-   				console.log('ja');
-   				console.log(collection);
-
-   				var res = collection.findWhere({MovieTitle: 'Candy (2006) 1080p'});
-   				console.log(res.get('MovieTitle'));
-   				
-   			},
-   			error: function(collection, response, options) {
-   				console.log('nee');
-
-   			}
-   		});  
-
-   		var col = new App.Model.MovieCollection();
-        col.fetch({
-   			success: function(collection, response, options) {
-   				
-   				console.log('ja');
-   				console.log(collection);
-
-   				var res = collection.findWhere({MovieTitle: 'Candy (2006) 1080p'});
-   				console.log(res.get('MovieTitle'));
-   				
-   			},
-   			error: function(collection, response, options) {
-   				console.log('nee');
-
-   			}
-
-   		});
-      */  		
+   api.init();
+   app.init();
    });
  </script>
 
