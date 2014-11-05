@@ -17,7 +17,7 @@ dqs
 <script src="js/api.js"></script>
 <script src="js/app.js"></script>
 <script src="js/models/artist.js"></script>
-
+<script src="js/views/artist.js"></script>
 <script>
    $(document).ready(function() {
    
@@ -39,22 +39,39 @@ dqs
         //  console.log(data);
         });  
       */  
+      var Boek = Backbone.Model.extend({
+
+      });
+
+      boek = new Boek();
+      boek.set('titel', 'nieuw boek');
+      console.log(boek);
 
         var artists = new App.Artists;
-        
-        
-        var art = new App.Artist({ id: '52c721e5b202a3edf1000072'});
-        art.id  = '52c721e5b202a3edf1000072';
+        //art.id  = '4d8b92b34eb68a1b2c0003f4';
         artists.fetch({
           success: function() {
-            console.log(artists.models);
-            console.log(artists.length);
+            //console.log(artists.models);
+            //console.log(artists.length);
+            var artistsListView = new App.ArtistListView({ collection: artists });
+            $('#artistsList').html(artistsListView.render().el);
+            //console.log(artistsListView.render().el);
+            console.log(artists.at(0));
+            console.log(artists.get('52c721e5b202a3edf1000072'));
+          
           }
         });
 
-        art.fetch({
+
+        var artist = new App.Artist({ id: '4d8b92b34eb68a1b2c0003f4'});
+        artist.fetch({
           success: function() {
-            console.log(art.id);
+            /*
+            console.log(artist);
+            console.log(artist.get('name'));
+            */
+            var artistView = new App.ArtistView({ el: $('#artistDetail'), model: artist});
+            artistView.render();
           }
         });
       }
@@ -65,17 +82,19 @@ dqs
  </script>
 
 
- <div id="movielist">
+ <ul id="artistsList">
+ </ul>
+
+ <div id="artistDetail">
  </div>
 
+<script type="text/html" id="tplArtist">
+    <strong>Name: <%= name %></strong>
+    <div>Biography:<%= biography %></div>
+    <div>Hometown: <%= hometown %></div>
+    <img src="<%= _links.thumbnail.href %>" alt="" />
+</script>
 
-<script type="text/template" id="tplMovieItem">
-
-    <div class="thumb"><img src="<%= CoverImage %>" /></div>
-    <a href="<%= ImdbLink %>" target="_blank"><%= MovieTitle %></a><br />
-    Quality: <%= Quality %><br />
-    <a href="<%= TorrentMagnetUrl %>">Magnet Url</a>
- </script>
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 App.Artist = Backbone.Model.extend({
-	url: 'https://api.artsy.net/api/artists/'
+	url: function() {
+		return 'https://api.artsy.net/api/artists/' + this.id;
+	}
 });
 
 App.Artists = Backbone.Collection.extend({
@@ -8,7 +10,8 @@ App.Artists = Backbone.Collection.extend({
 	parse: function(data) {
 		self = this;
 		$.each(data._embedded.artists, function(i, art) {
-			self.add(new App.Artist(art));
+			//self.add(new App.Artist(art));
+			self.add(art);
 		});
 
 		return this.models;

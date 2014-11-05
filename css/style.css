@@ -1,0 +1,15 @@
+#artistsList {
+	list-style:none;
+	overflow: hidden;
+}
+
+li.artist {
+	float:left;
+	overflow: hidden;
+	margin-left: 10px;
+	width:33%;	
+}
+#artistDetail {
+	background-color: #e5e5e5;
+	padding: 10px;
+}
