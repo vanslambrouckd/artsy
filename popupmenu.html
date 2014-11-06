@@ -5,7 +5,7 @@
 
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
-
+ <link rel="stylesheet" href="css/font-awesome-4.2.0/css/font-awesome.min.css">	
 <style type="text/css">
 .size { position:relative }
 .size .field {
@@ -25,16 +25,35 @@
 	-webkit-box-shadow:0 0 5px #999; 
 	box-shadow:0 0 5px #999
 }
-.size>ul.list { display:none;
+.size ul.list { 
+	list-style:none;
+	margin:0; 
+	padding:10px; 
+background:#fff; 
+	color:#333;
+	
+	
+}
+.size ul.list li {
+	padding:10px;
+	border-bottom: solid 1px #ccc;
+	cursor: pointer;
+}
+.size ul.list li:hover {
+	background:#EC6603; 
+	color:#fff;
+}
+.size ul.list li:last-child { 
+	border:none 
+}
+
+.popup {
+	display:none;
 	position:absolute; 
 	left:0px; 
 	top:30px;
 	z-index:999;
 	width:300px;
-	margin:0; 
-	padding:10px; 
-	list-style:none;
-	background:#fff; color:#333;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	border-radius:5px;
@@ -42,14 +61,13 @@
 	-webkit-box-shadow:0 0 5px #999;
 	box-shadow:0 0 5px #999
 }
-.size>ul.list li {
+
+.size > a {
+	background-color: red;
+	display: block;
 	padding:10px;
-	border-bottom: solid 1px #ccc;
+	cursor: pointer;
 }
-.size>ul.list li:hover {
-	background:#EC6603; color:#fff;
-}
-.size>ul.list li:last-child { border:none }
 </style> 
 
 <script src="js/jquery-2.1.1.min.js"></script>
@@ -102,110 +120,83 @@ $.fn.styleddropdown = function(){
 });
 };
 
-
-function Tooltip(options) {
-	self = this;
-	this.options = options;
-	this.$el = this.options.el;
-	this.$container = this.options.container;
-	/*
-	this.$el = options.el;
-	this.$el.find('ul').hide();
-	*/
-	console.log(this.options.name);
-	this.show = function() {
-		console.log('show');
-		this.$el.show();
-	}
-
-	this.hide = function() {
-		console.log('hide');
-		this.$el.hide();
-	}
-
-	this.test = function() {
-		return this.options.name;
-	}
-
-	this.$container.on('click', function(event) {
-		event.preventDefault();
-		console.log(self.options.name);
-		console.log(self.$container);
-		
-		/*
-		console.log(self.$el.is(':visible'));
-		if (self.$el.is(':visible')) {
-			self.hide();
-		} else {
-			self.show();
-
-		}
-		*/
-	});
-}
-
-function Car(model, year, miles) { 
-	this.model = model;
-	this.year = year;
-	this.miles = miles;
-
-	
-	this.test = function() {
-		return this.model + " has done " + this.miles + " miles";
-	}
-	
-}
-
-/*
-Car.prototype.test = function() {
-	return this.model;	
-}
-*/
-
-/*
-var Tooltip = {
-	$obj: null,
-	Tooltip: function(options) {
-		this.$obj = options.el;
-	}
-}
-*/
-/*
-function Plugin(el, options) {
-	this.$el = el;
-	this.options = options;
-	//console.log(options);
-	
-	
-	this.name = name;
-	self = this;
-	
-	$el = $(el);
-	$el.on('click', function(event) {
-	
-		console.log(self.options);
-	});
-}
-*/
-
 ;(function($) {
 	//gebaseerd op https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
-	var pluginName = 'remodal'
+	var pluginName = 'Tooltip'
 
 	$[pluginName] = {
 		lookup:[]
 	}
 
-	function Remodal($elem, options) {
-		var remodal = this;
-		console.log(this);
-		remodal.settings = options;
-		remodal.index = $[pluginName].lookup.push(remodal)-1;
+	function Plugin($elem, options) {
+		var obj = this;
+		//console.log(this);
+		//opties afgekeken van qtip2
+		var defaults = {
+			'region': 'right',
+			show: {
+				delay: 0,
+				event: 'click'
+			},
+			hide: {
+				delay: 100,
+				event: 'mouseleave click'
+			}
+		}
+		obj.settings = $.extend({}, defaults, options);
+		//console.log(obj.settings);
+		obj.$elem = $elem;
+		obj.index = $[pluginName].lookup.push(obj)-1;
+		
+		obj.rebindEvents();
 	}
 
-	Remodal.prototype.open = function() {
-		var remodal = this;
-		console.log(remodal);
+	Plugin.prototype.rebindEvents = function() {
+		var obj = this;
+		if (obj.settings.el.is(':visible')) {
+			obj.settings.container.off(obj.settings.show.event);
+			obj.settings.container.on(obj.settings.hide.event, function() {
+				obj.hide();
+				obj.rebindEvents();
+			});
+		} else {
+			obj.settings.container.off(obj.settings.show.event);
+			obj.settings.container.on(obj.settings.show.event, function() {
+				obj.show();
+				obj.rebindEvents();
+			});
+		}
+	}
+
+	Plugin.prototype.hide = function() {
+		var obj = this;
+		obj.settings.el.hide();
+		//obj.rebindEvents();
+
+	}
+
+	Plugin.prototype.show = function() {
+		var obj = this;
+		obj.settings.el.show();
+		//obj.rebindEvents();
+		//console.log('show functino called');
+	}
+
+	Plugin.prototype.autostart = function() {
+		var obj = this;
+		obj.settings.container.hover(
+			function() {
+				obj.settings.el.delay(obj.settings.show.delay);
+				//console.clear();
+				//console.log('hover show');
+				obj.settings.el.fadeIn(400);
+			},
+			function(){
+				obj.settings.el.delay(obj.settings.hide.delay);
+				//console.clear();
+				//console.log('hover hide');
+				obj.settings.el.fadeOut(400);
+			});
 	}
 
 	/* plugin constructor */
@@ -217,8 +208,9 @@ function Plugin(el, options) {
 			$elem = $(elem);
 
 			if ($elem.data(pluginName) == null) {
-				instance = new Remodal($elem, opts);
+				instance = new Plugin($elem, opts);
 				$elem.data(pluginName, instance.index);
+				//instance.show();
 			}
 		});
 
@@ -226,80 +218,39 @@ function Plugin(el, options) {
 	}
 })(window.jQuery);
 
-$.fn.newPlugin = function(options) {
-	var argumentsArray = Array.prototype.slice.call(arguments, 0);
-	//console.log(argumentsArray);
-
-	var settings = $.extend({
-		name: ''
-	}, options);
-	return this.each(function() {
-		var $el = $(this);
-		var data = $(this).data('opts');
-
-		if (!data) {
-			//console.log(argumentsArray[0]);
-			data = argumentsArray[0];
-		}
-		/*
-		if ($el.data('opts')) {
-			console.log('al initialized');
-			return;	
-		}
-		*/
-		//console.log(data);
-		$el.data('opts', data);
-		//new Plugin(this, argumentsArray[0], argumentsArray[1]);
-		//new Plugin(this, data);
-		//Plugin.apply(this, data);
-	});
-};
-
 $(document).ready(function() {
-	//$('.size').styleddropdown();
-	/*
-$('#link1').newPlugin({'name': 'david'});
-$('#link2').newPlugin({'name': 'david2'});
-*/
 
-var inst = $('#link1').remodal({naam: 'item1'});
-inst.open();
-console.log(inst.settings.naam);
-
-
-var inst2 = $('#link2').remodal({naam: 'item2'});
-inst2.open();
-console.log(inst2.settings.naam);
-
-var civic = new Car("Honda Civic", 2009, 20000); 
-var mondeo = new Car("Ford Mondeo", 2010, 5000);
-console.log(civic.test());
-console.log(mondeo.test());
-
-	/*
 	var opts = {
-		el: $('#size .list'),
+		el: $('#size .popup'),
 		container: $('#size'),
-		name: 'item1',
+		naam: 'item1',
 	}
-	tooltip = new Tooltip(opts);
 
-	tooltip2 = new Tooltip({
-		el: $('#size2 .list'),
-		container: $('#size2'),
-		name:'item2'
-	});
-	*/
-	//console.log(tooltip.test());
-	//console.log(tooltip2.test());
-
-	//console.log(tooltip);
+	var inst = $('#link1').Tooltip(opts);
+	//inst.show();
+	//console.log(inst.settings.naam);
 	
-	//$('#size').on('click', tooltip.show());
+	var opts = {
+		el: $('#size2 .popup'),
+		container: $('#size2'),
+		naam:'item2',
+		show: {
+			event: 'mouseenter'
+		}
+	}
+	var inst2 = $('#link2').Tooltip(opts);
+	
+	//inst2.autostart();
+	//console.log(inst2.settings.naam);
+
+	/*
 	$('#size').on('click', function(event) {
 		//tooltip.show();
+		//console.log('ja');
+		inst.hide();
 	});
-	
+	*/
+		
 });
 </script>
 
@@ -307,23 +258,34 @@ console.log(mondeo.test());
 <a id="link2">link2</a>
 
 <div id="size" class="size">
+	<!--
 	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
-	<ul class="list">
-		<li>Male - M</li>
-		<li>Female - M</li>
-		<li>Male - S</li>
-		<li>Female - S</li>
-	</ul>
+	-->
+	<a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
+	<div class="popup">
+		<ul class="list">
+			<li>Male - M</li>
+			<li>Female - M</li>
+			<li>Male - S</li>
+			<li>Female - S</li>
+		</ul>
+	</div>
 </div>
 
 <div id="size2" class="size" style="margin-top:200px;">
+	<!--
 	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
-	<ul class="list">
-		<li>Male - M</li>
-		<li>Female - M</li>
-		<li>Male - S</li>
-		<li>Female - S</li>
-	</ul>
+	-->
+	<a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
+	
+	<div class="popup">
+		<ul class="list">
+			<li>Male - M</li>
+			<li>Female - M</li>
+			<li>Male - S</li>
+			<li>Female - S</li>
+		</ul>
+	</div>
 </div>
 
 </body>
