@@ -1,12 +1,19 @@
 <html>
 <body>
-fdsq
-fdqs
-f
-dqs
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
 <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+
 <script src="js/jquery-2.1.1.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
 <script src="js/underscore-min.js"></script>
+<script src="js/flowtip.js"></script>
 <script src="js/backbone-min.js"></script>
 <script src="js/backbone.paginator.js"></script>
 <script src="js/vendor/backbone.marionette/backbone.marionette.min.js"></script>
@@ -85,6 +92,7 @@ dqs
       booksListView = new BooksListView({ el: $('#booksList'), collection: myBooks.getLastPage() });
       booksListView.render();
 
+
         var artists = new App.Artists;
         //art.id  = '4d8b92b34eb68a1b2c0003f4';
         artists.fetch({
@@ -116,8 +124,12 @@ dqs
    }    
    api.init();
    app.init();
+
    });
  </script>
+
+<a id="nextBookPage">next book page</a>
+
 
 <div id="booksList">
 </div>
@@ -128,13 +140,27 @@ dqs
  <div id="artistDetail">
  </div>
 
+ <form role="form" id="editBoek">
+  <div class="form-group">
+    <label for="titel">Titel</label>
+    <input type="text" class="form-control" id="titel" placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="auteur">Auteur</label>
+    <input type="text" class="form-control" id="auteur" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+</div>
+
+
+
 <script type="text/html" id="tplArtist">
     <strong>Name: <%= name %></strong>
     <div>Biography:<%= biography %></div>
     <div>Hometown: <%= hometown %></div>
     <img src="<%= _links.thumbnail.href %>" alt="" />
 </script>
-
 
 </body>
 </html>

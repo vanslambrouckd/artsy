@@ -13,3 +13,45 @@ li.artist {
 	background-color: #e5e5e5;
 	padding: 10px;
 }
+
+.flowtip {
+	background-color: #000;
+    border-radius: 4px;
+    color: #fff;
+    max-width: 200px;
+    padding: 3px 8px;
+    text-align: center;
+    text-decoration: none;
+}
+
+#appContent {
+	height: 100%;
+	background-color:red;
+}
+
+#appContent > .views {
+	position: absolute;
+	left:300px;
+	right:0px;
+	top:0px;
+	bottom:0px;
+	background-color: green;
+}
+
+#nav {
+	background-color:#FAFAFA;
+	width:300px;
+	position: absolute;
+	top:0px;
+	bottom:0px;
+	overflow:scroll;
+}
+
+#nav ul {
+	list-style:none;
+}
+
+#nav li {
+
+}
+

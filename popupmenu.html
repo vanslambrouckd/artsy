@@ -1,0 +1,131 @@
+<html>
+<body>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+
+<style type="text/css">
+.size { position:relative }
+.size .field {
+	width:300px; 
+	background:#EC6603; color:#fff; 
+	padding:5px; 
+	border:none; 
+	cursor:pointer;
+	font-family:'lucida sans unicode',sans-serif; font-size:1em;
+	border:solid 1px #EC6603;
+	-webkit-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+.size .field:hover {
+	border:solid 1px #fff;
+	-moz-box-shadow:0 0 5px #999; 
+	-webkit-box-shadow:0 0 5px #999; 
+	box-shadow:0 0 5px #999
+}
+.size>ul.list { display:none;
+	position:absolute; 
+	left:0px; 
+	top:30px;
+	z-index:999;
+	width:300px;
+	margin:0; 
+	padding:10px; 
+	list-style:none;
+	background:#fff; color:#333;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	-moz-box-shadow:0 0 5px #999;
+	-webkit-box-shadow:0 0 5px #999;
+	box-shadow:0 0 5px #999
+}
+.size>ul.list li {
+	padding:10px;
+	border-bottom: solid 1px #ccc;
+}
+.size>ul.list li:hover {
+	background:#EC6603; color:#fff;
+}
+.size>ul.list li:last-child { border:none }
+</style> 
+
+<script src="js/jquery-2.1.1.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<script src="js/underscore-min.js"></script>
+<script src="js/flowtip.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="js/backbone.paginator.js"></script>
+<script src="js/vendor/backbone.marionette/backbone.marionette.min.js"></script>
+ 
+	<script src="js/frontend/ui.js"></script>
+
+ 
+<script src="js/pubsub.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/models/artist.js"></script>
+<script src="js/views/artist.js"></script>
+<script>
+$.fn.styleddropdown = function(){
+	return this.each(function(){
+	var obj = $(this)
+	obj.find('.field').click(function() { //onclick event, 'list' fadein
+	obj.find('.list').fadeIn(400);
+	
+	$(document).keyup(function(event) { //keypress event, fadeout on 'escape'
+		if(event.keyCode == 27) {
+		obj.find('.list').fadeOut(400);
+		}
+	});
+	
+	obj.find('.list').hover(function(){ },
+		function(){
+			$(this).fadeOut(400);
+		});
+	});
+	
+	obj.find('.list li').click(function() { //onclick event, change field value with selected 'list' item and fadeout 'list'
+	obj.find('.field')
+		.val($(this).html())
+		.css({
+			'background':'#fff',
+			'color':'#333'
+		});
+	obj.find('.list').fadeOut(400);
+	});
+});
+};
+
+$(document).ready(function() {
+	$('.size').styleddropdown();
+});
+</script>
+
+<div class="size">
+	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
+	<ul class="list">
+		<li>Male - M</li>
+		<li>Female - M</li>
+		<li>Male - S</li>
+		<li>Female - S</li>
+	</ul>
+</div>
+
+<div class="size" style="margin-top:200px;">
+	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
+	<ul class="list">
+		<li>Male - M</li>
+		<li>Female - M</li>
+		<li>Male - S</li>
+		<li>Female - S</li>
+	</ul>
+</div>
+
+</body>
+</html>
