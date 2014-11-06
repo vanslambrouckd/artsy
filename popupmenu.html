@@ -102,12 +102,211 @@ $.fn.styleddropdown = function(){
 });
 };
 
+
+function Tooltip(options) {
+	self = this;
+	this.options = options;
+	this.$el = this.options.el;
+	this.$container = this.options.container;
+	/*
+	this.$el = options.el;
+	this.$el.find('ul').hide();
+	*/
+	console.log(this.options.name);
+	this.show = function() {
+		console.log('show');
+		this.$el.show();
+	}
+
+	this.hide = function() {
+		console.log('hide');
+		this.$el.hide();
+	}
+
+	this.test = function() {
+		return this.options.name;
+	}
+
+	this.$container.on('click', function(event) {
+		event.preventDefault();
+		console.log(self.options.name);
+		console.log(self.$container);
+		
+		/*
+		console.log(self.$el.is(':visible'));
+		if (self.$el.is(':visible')) {
+			self.hide();
+		} else {
+			self.show();
+
+		}
+		*/
+	});
+}
+
+function Car(model, year, miles) { 
+	this.model = model;
+	this.year = year;
+	this.miles = miles;
+
+	
+	this.test = function() {
+		return this.model + " has done " + this.miles + " miles";
+	}
+	
+}
+
+/*
+Car.prototype.test = function() {
+	return this.model;	
+}
+*/
+
+/*
+var Tooltip = {
+	$obj: null,
+	Tooltip: function(options) {
+		this.$obj = options.el;
+	}
+}
+*/
+/*
+function Plugin(el, options) {
+	this.$el = el;
+	this.options = options;
+	//console.log(options);
+	
+	
+	this.name = name;
+	self = this;
+	
+	$el = $(el);
+	$el.on('click', function(event) {
+	
+		console.log(self.options);
+	});
+}
+*/
+
+;(function($) {
+	//gebaseerd op https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
+	var pluginName = 'remodal'
+
+	$[pluginName] = {
+		lookup:[]
+	}
+
+	function Remodal($elem, options) {
+		var remodal = this;
+		console.log(this);
+		remodal.settings = options;
+		remodal.index = $[pluginName].lookup.push(remodal)-1;
+	}
+
+	Remodal.prototype.open = function() {
+		var remodal = this;
+		console.log(remodal);
+	}
+
+	/* plugin constructor */
+	$.fn[pluginName] = function(opts) {
+		var instance;
+		var $elem;
+
+		this.each(function(index, elem) {
+			$elem = $(elem);
+
+			if ($elem.data(pluginName) == null) {
+				instance = new Remodal($elem, opts);
+				$elem.data(pluginName, instance.index);
+			}
+		});
+
+		return instance;
+	}
+})(window.jQuery);
+
+$.fn.newPlugin = function(options) {
+	var argumentsArray = Array.prototype.slice.call(arguments, 0);
+	//console.log(argumentsArray);
+
+	var settings = $.extend({
+		name: ''
+	}, options);
+	return this.each(function() {
+		var $el = $(this);
+		var data = $(this).data('opts');
+
+		if (!data) {
+			//console.log(argumentsArray[0]);
+			data = argumentsArray[0];
+		}
+		/*
+		if ($el.data('opts')) {
+			console.log('al initialized');
+			return;	
+		}
+		*/
+		//console.log(data);
+		$el.data('opts', data);
+		//new Plugin(this, argumentsArray[0], argumentsArray[1]);
+		//new Plugin(this, data);
+		//Plugin.apply(this, data);
+	});
+};
+
 $(document).ready(function() {
-	$('.size').styleddropdown();
+	//$('.size').styleddropdown();
+	/*
+$('#link1').newPlugin({'name': 'david'});
+$('#link2').newPlugin({'name': 'david2'});
+*/
+
+var inst = $('#link1').remodal({naam: 'item1'});
+inst.open();
+console.log(inst.settings.naam);
+
+
+var inst2 = $('#link2').remodal({naam: 'item2'});
+inst2.open();
+console.log(inst2.settings.naam);
+
+var civic = new Car("Honda Civic", 2009, 20000); 
+var mondeo = new Car("Ford Mondeo", 2010, 5000);
+console.log(civic.test());
+console.log(mondeo.test());
+
+	/*
+	var opts = {
+		el: $('#size .list'),
+		container: $('#size'),
+		name: 'item1',
+	}
+	tooltip = new Tooltip(opts);
+
+	tooltip2 = new Tooltip({
+		el: $('#size2 .list'),
+		container: $('#size2'),
+		name:'item2'
+	});
+	*/
+	//console.log(tooltip.test());
+	//console.log(tooltip2.test());
+
+	//console.log(tooltip);
+	
+	//$('#size').on('click', tooltip.show());
+	$('#size').on('click', function(event) {
+		//tooltip.show();
+	});
+	
 });
 </script>
 
-<div class="size">
+<a id="link1">link1</a>
+<a id="link2">link2</a>
+
+<div id="size" class="size">
 	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
 	<ul class="list">
 		<li>Male - M</li>
@@ -117,7 +316,7 @@ $(document).ready(function() {
 	</ul>
 </div>
 
-<div class="size" style="margin-top:200px;">
+<div id="size2" class="size" style="margin-top:200px;">
 	<input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
 	<ul class="list">
 		<li>Male - M</li>
