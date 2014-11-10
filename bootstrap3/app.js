@@ -1,2 +1,5 @@
 /* http://www.w3schools.com/bootstrap */
-$('#contentWrapper').html($('#tplClose').html());
+var appRouter = new AppRouter();
+Backbone.history.start({
+
+});

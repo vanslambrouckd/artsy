@@ -11,15 +11,47 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="../js/underscore-min.js"></script>
+
+    <script src="../js/backbone-min.js"></script>
   </head>
   <body>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">aa</div>
+      <div class="col-md-12">
+        
+      </div>
     </div>
     <div class="row">
-      <div class="col-md-2">sidebar</div>
+      <div class="col-md-2">
+        <ul class="nav">
+
+          <li class="active"><a href="#form-inline">form-inline</a></li>
+          <li><a href="#form">form</a></li>
+          <li><a href="#form-horizontal">form-horizontal</a></li>
+          <li><a href="#checkboxes">checkboxes</a></li>
+          <li><a href="#radios">radios</a></li>
+          <li><a href="#select">select</a></li>
+          <li><a href="#formstates">formstates</a></li>
+          <li><a href="#formstates-inline">formstates-inline</a></li>
+          <li><a href="#height-sizing">height-sizing</a></li>
+          <li><a href="#height-sizing-group">height-sizing-group</a></li>
+          <li><a href="#column-sizing">column-sizing</a></li>
+          <li><a href="#helpblock">helpblock</a></li>
+          <li><a href="#button">template-button</a></li>
+          <li><a href="#button-icon">template-button-icon</a></li>
+          <li><a href="#menu-tabs">template-menu-tabs</a></li>
+          <li><a href="#menu-pills">template-menu-pills</a></li>
+          <li><a href="#menu-pills-stacked">menu-pills-stacked</a></li>
+          <li><a href="#submenus-tabs">submenus-tabs</a></li>
+          <li><a href="#submenus-pills">submenus-pills</a></li>
+          <li><a href="#navbar">navbar</a></li>
+          <li><a href="#centerblock">centerblock</a></li>
+          <li><a href="#texthide">texthide</a></li>
+          <li><a href="#close">close</a></li>
+        </ul>
+      </div>
       <div class="col-md-10" id="contentWrapper"></div>
     </div>
     <div class="row">
@@ -27,7 +59,7 @@
     </div>
   </div>
 
-<script type="text/html" id="tplFormInline">
+<script type="text/html" id="template-form-inline">
 <form class="form-inline" role="form">
   <div class="form-group">
     <label for="email">Email address:</label>
@@ -44,7 +76,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplForm">
+<script type="text/html" id="template-form">
 <form role="form">
   <div class="form-group">
     <label for="email">Email address:</label>
@@ -60,7 +92,7 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
 </script>
-<script type="text/html" id="tplFormHorizontal">
+<script type="text/html" id="template-form-horizontal">
  <form class="form-horizontal" role="form">
   <div class="form-group">
     <label class="control-label col-sm-2" for="email">Email:</label>
@@ -89,7 +121,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplCheckboxes">
+<script type="text/html" id="template-checkboxes">
 <div class="checkbox">
   <label><input type="checkbox" value="">Option 1</label>
 </div>
@@ -104,7 +136,7 @@
 <label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
 </script>
 
-<script type="text/html" id="tplRadios">
+<script type="text/html" id="template-radios">
 <div class="radio">
   <label><input type="radio" name="optradio">Option 1</label>
 </div>
@@ -119,7 +151,7 @@
 <label class="radio-inline"><input type="radio" name="optradio">Option 3</label> 
 </script>
 
-<script type="text/html" id="tplSelect">
+<script type="text/html" id="template-select">
  <div class="form-group">
   <label for="sel1">Select list:</label>
   <select class="form-control" id="sel1">
@@ -131,7 +163,7 @@
 </div>
 </script>
 
-<script type="text/html" id="tplFormStates">
+<script type="text/html" id="template-formstates">
  <form class="form-horizontal" role="form">
   <div class="form-group">
     <label class="col-sm-2 control-label">Focused</label>
@@ -185,7 +217,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplFormStatesInline">
+<script type="text/html" id="template-formstates-inline">
  <form class="form-inline" role="form">
   <div class="form-group">
     <label for="focusedInput">Focused</label>
@@ -213,7 +245,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplHeightSizing">
+<script type="text/html" id="template-height-sizing">
  <form class="form-inline" role="form">
   <div class="form-group">
     <label for="inputdefault">Default input</label>
@@ -230,7 +262,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplHeightSizingGroup">
+<script type="text/html" id="template-height-sizing-group">
  <form class="form-horizontal" role="form">
   <div class="form-group form-group-lg">
     <label class="col-sm-2 control-label" for="lg">form-group-lg</label>
@@ -247,7 +279,7 @@
 </form>
 </script>
 
-<script type="text/html" id="tplColumnSizing">
+<script type="text/html" id="template-column-sizing">
  <div class="col-xs-2">
   <label for="ex1">col-xs-2</label>
   <input class="form-control" id="ex1" type="text">
@@ -262,7 +294,7 @@
 </div>
 </script>
 
-<script type="text/html" id="tplHelpBlock">
+<script type="text/html" id="template-helpblock">
 <div class="form-group">
   <label for="pwd">Password:</label>
   <input type="password" class="form-control" id="pwd" placeholder="Enter password">
@@ -270,23 +302,23 @@
 </div>
 </script>
 
-<script type="text/html" id="tplJumbotron">
+<script type="text/html" id="template-jumbotron">
  <div class="jumbotron">
     <h1>My first Bootstrap website!</h1>
     <p>This page will grow as we add more and more components from Bootstrap...</p>
   </div>
 </script>
 
-<script type="text/html" id="tplButton">
+<script type="text/html" id="template-button">
 <button type="button" class="btn btn-default">Button Text</button>
 <a class="btn btn-info btn-xs">button text</a>
 </script>
 
-<script type="text/html" id="tplButtonIcon"> 
+<script type="text/html" id="template-button-icon"> 
   <a class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-search"></span> Search</a>
 </script>
 
-<script type="text/html" id="tplMenusTabs">
+<script type="text/html" id="template-menu-tabs">
 <ul class="nav nav-tabs"> 
   <li class="active"><a href="#">Home</a></li>
   <li><a href="#">About</a></li>
@@ -294,7 +326,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="tplMenusPills">
+<script type="text/html" id="template-menu-pills">
 <ul class="nav nav-pills"> 
   <li class="active"><a href="#">Home</a></li>
   <li><a href="#">About</a></li>
@@ -302,7 +334,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="tplMenusVerticalPills">
+<script type="text/html" id="template-menu-pills-stacked">
 <div class="col-md-3">
   <ul class="nav nav-pills nav-stacked"> 
     <li class="active"><a href="#">Home</a></li>
@@ -312,7 +344,7 @@
 </div>
 </script>
 
-<script type="text/html" id="tplSubmenusTabs">
+<script type="text/html" id="template-submenus-tabs">
 <ul class="nav nav-tabs">
   <li class="active"><a href="#">Home</a></li>
   <li class="dropdown">
@@ -329,7 +361,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="tplSubmenusPills">
+<script type="text/html" id="template-submenus-pills">
 <ul class="nav nav-pills nav-stacked">
   <li class="active"><a href="#">Home</a></li>
   <li class="dropdown">
@@ -346,7 +378,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="tplNavbar">
+<script type="text/html" id="template-navbar">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header"><a class="navbar-brand" href="#">website name</a>
@@ -374,21 +406,22 @@
 </nav>
 </script>
 
-<script type="text/html" id="tplCenterBlock">
+<script type="text/html" id="template-centerblock">
 <div class="center-block bg-info" style="max-width:300px;">
 center block content
 </div>
 </script>
 
-<script type="text/html" id="tplTextHide">
+<script type="text/html" id="template-texthide">
 <div class="text-hide" style="max-width:300px;background-image:url(https://www.google.be/images/srpr/logo11w.png);height:200Px;">
 center block content
 </div>
 </script>
 
-<script type="text/html" id="tplClose">
+<script type="text/html" id="template-close">
 <button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 </script>
+<script type="text/javascript" src="router.js"></script>
 <script type="text/javascript" src="app.js"></script>
   </body>
 </html>
