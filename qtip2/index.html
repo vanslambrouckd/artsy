@@ -15,23 +15,18 @@ $(document).ready(function() {
 	//app.init();	
 });
 </script>
-<br />
-<br />
-<br />
-<br />
-
-<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="#" class="navbar-brand">Project name</a>
+          <a class="navbar-brand" href="#">Project name</a>
         </div>
-        <div class="navbar-collapse collapse" id="navbar" aria-expanded="false" style="height: 1px;">
+        <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
@@ -39,52 +34,41 @@ $(document).ready(function() {
             <li><a href="#">Help</a></li>
           </ul>
           <form class="navbar-form navbar-right">
-            <input type="text" placeholder="Search..." class="form-control">
+            <input type="text" class="form-control" placeholder="Search...">
           </form>
         </div>
       </div>
     </nav>
 
-    <div clas="container-fluid">
+    <div class="container-fluid">
     	<div class="row">
-    		<div class="sidebar">sidebar</div>
-    	</div>
-    </div>
-<div class="btn-group">
-  <button type="button" class="btn btn-default">Left</button>
-  <button type="button" class="btn btn-default">Middle</button>
-  <button type="button" class="btn btn-default">Right</button>
-</div>
-<div id="wrapperMenu">	
-	<a id="hideClick">hide on click</a>
-	<a id="testTooltip" data-tooltip="dit is de inhoud van de tooltip">test tooltip</a><br /><br />
-	
-	<a id="login">klik hier om in te loggen</a><br />
+	        <div class="col-sm-3 col-md-2 sidebar">
+<ul class="nav nav-sidebar">
+	<li class="active"><a href="#">Overview</a></li>
+	<li><a href="#">Reports</a></li>
+	<li><a href="#">Analytics</a></li>
+	<li><a href="#">Export</a></li>
+</ul>
+	        </div>
+	        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+		        fdq<br /><br /><br /><br />
+<input class="form-control input-xs" type="text" placeholder=".input-xs">
+				<div class="btn-group">
+				  <button type="button" class="btn btn-default">Left</button>
+				  <button type="button" class="btn btn-default">Middle</button>
+				  <button type="button" class="btn btn-default">Right</button>
+				</div>
+				<a id="hideClick">hide on click</a>
+				<a id="testTooltip" data-tooltip="dit is de inhoud van de tooltip">test tooltip</a><br /><br />
 
-	<a id="modal">modal</a>
-</div>
+				<a id="login">klik hier om in te loggen</a><br />
 
-<form role="form">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
-    <p class="help-block">Example block-level help text here.</p>
-  </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"> Check me out
-    </label>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
+				<a id="modal">modal</a>
+
+	 		</div>
+ 		</div>
+	</div>
+
 <script type="text/html" id="tplLogin">
 <form >
   <div>
