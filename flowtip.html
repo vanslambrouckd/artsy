@@ -1,0 +1,79 @@
+<html>
+<body>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+
+<style type="text/css">
+#tipcontainer {
+  width:500px;
+  background-color: red;
+}
+
+#container {
+  width:200px;
+  height:200px;
+  background-color: #e5e5e5;
+}
+</style> 
+
+<script src="js/jquery-2.1.1.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<script src="js/underscore-min.js"></script>
+<script src="js/flowtip.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="js/backbone.paginator.js"></script>
+<script src="js/vendor/backbone.marionette/backbone.marionette.min.js"></script>
+ 
+  <script src="js/frontend/ui.js"></script>
+
+ 
+<script src="js/pubsub.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/models/artist.js"></script>
+<script src="js/views/artist.js"></script>
+<script>
+   $(document).ready(function() {
+   
+
+   var $container = $("#container");
+
+   /*
+   var $container = $("#demo-container");
+    var $target = $("<div />").addClass("flowtip-target").hide();
+    $target.appendTo($("body"));
+  */
+   var tooltip = new FlowTip({
+    region:'right',
+    hasTail:true,
+    tooltipContent:"fdkl" ,
+    width: 100,
+    rootAlign:'edge',
+    appendTo: $('body')
+   });
+
+   //$('.my-tip').hide();
+   tooltip.setTarget($('body'));
+
+   tooltip.show();
+
+   $(window).resize(function() {
+    tooltip.reposition();
+    console.log('ja');
+   });
+
+   });
+ </script>
+
+<div id="container">
+</div>
+
+  <div class="flowtip">tooltip content</div>
+</body>
+</html>
