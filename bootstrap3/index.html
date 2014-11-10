@@ -24,33 +24,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2">
-        <ul class="nav">
-
-          <li class="active"><a href="#form-inline">form-inline</a></li>
-          <li><a href="#form">form</a></li>
-          <li><a href="#form-horizontal">form-horizontal</a></li>
-          <li><a href="#checkboxes">checkboxes</a></li>
-          <li><a href="#radios">radios</a></li>
-          <li><a href="#select">select</a></li>
-          <li><a href="#formstates">formstates</a></li>
-          <li><a href="#formstates-inline">formstates-inline</a></li>
-          <li><a href="#height-sizing">height-sizing</a></li>
-          <li><a href="#height-sizing-group">height-sizing-group</a></li>
-          <li><a href="#column-sizing">column-sizing</a></li>
-          <li><a href="#helpblock">helpblock</a></li>
-          <li><a href="#button">template-button</a></li>
-          <li><a href="#button-icon">template-button-icon</a></li>
-          <li><a href="#menu-tabs">template-menu-tabs</a></li>
-          <li><a href="#menu-pills">template-menu-pills</a></li>
-          <li><a href="#menu-pills-stacked">menu-pills-stacked</a></li>
-          <li><a href="#submenus-tabs">submenus-tabs</a></li>
-          <li><a href="#submenus-pills">submenus-pills</a></li>
-          <li><a href="#navbar">navbar</a></li>
-          <li><a href="#centerblock">centerblock</a></li>
-          <li><a href="#texthide">texthide</a></li>
-          <li><a href="#close">close</a></li>
-        </ul>
+      <div class="col-md-2" id="sidebar">
+        
       </div>
       <div class="col-md-10" id="contentWrapper"></div>
     </div>
@@ -59,7 +34,7 @@
     </div>
   </div>
 
-<script type="text/html" id="template-form-inline">
+<script type="text/html" id="bootstrap-form-inline">
 <form class="form-inline" role="form">
   <div class="form-group">
     <label for="email">Email address:</label>
@@ -76,7 +51,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-form">
+<script type="text/html" id="bootstrap-form">
 <form role="form">
   <div class="form-group">
     <label for="email">Email address:</label>
@@ -92,7 +67,7 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
 </script>
-<script type="text/html" id="template-form-horizontal">
+<script type="text/html" id="bootstrap-form-horizontal">
  <form class="form-horizontal" role="form">
   <div class="form-group">
     <label class="control-label col-sm-2" for="email">Email:</label>
@@ -121,7 +96,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-checkboxes">
+<script type="text/html" id="bootstrap-checkboxes">
 <div class="checkbox">
   <label><input type="checkbox" value="">Option 1</label>
 </div>
@@ -136,7 +111,7 @@
 <label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
 </script>
 
-<script type="text/html" id="template-radios">
+<script type="text/html" id="bootstrap-radios">
 <div class="radio">
   <label><input type="radio" name="optradio">Option 1</label>
 </div>
@@ -151,7 +126,7 @@
 <label class="radio-inline"><input type="radio" name="optradio">Option 3</label> 
 </script>
 
-<script type="text/html" id="template-select">
+<script type="text/html" id="bootstrap-select">
  <div class="form-group">
   <label for="sel1">Select list:</label>
   <select class="form-control" id="sel1">
@@ -163,7 +138,7 @@
 </div>
 </script>
 
-<script type="text/html" id="template-formstates">
+<script type="text/html" id="bootstrap-formstates">
  <form class="form-horizontal" role="form">
   <div class="form-group">
     <label class="col-sm-2 control-label">Focused</label>
@@ -217,7 +192,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-formstates-inline">
+<script type="text/html" id="bootstrap-formstates-inline">
  <form class="form-inline" role="form">
   <div class="form-group">
     <label for="focusedInput">Focused</label>
@@ -245,7 +220,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-height-sizing">
+<script type="text/html" id="bootstrap-height-sizing">
  <form class="form-inline" role="form">
   <div class="form-group">
     <label for="inputdefault">Default input</label>
@@ -262,7 +237,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-height-sizing-group">
+<script type="text/html" id="bootstrap-height-sizing-group">
  <form class="form-horizontal" role="form">
   <div class="form-group form-group-lg">
     <label class="col-sm-2 control-label" for="lg">form-group-lg</label>
@@ -279,7 +254,7 @@
 </form>
 </script>
 
-<script type="text/html" id="template-column-sizing">
+<script type="text/html" id="bootstrap-column-sizing">
  <div class="col-xs-2">
   <label for="ex1">col-xs-2</label>
   <input class="form-control" id="ex1" type="text">
@@ -294,7 +269,7 @@
 </div>
 </script>
 
-<script type="text/html" id="template-helpblock">
+<script type="text/html" id="bootstrap-helpblock">
 <div class="form-group">
   <label for="pwd">Password:</label>
   <input type="password" class="form-control" id="pwd" placeholder="Enter password">
@@ -302,23 +277,23 @@
 </div>
 </script>
 
-<script type="text/html" id="template-jumbotron">
+<script type="text/html" id="bootstrap-jumbotron">
  <div class="jumbotron">
     <h1>My first Bootstrap website!</h1>
     <p>This page will grow as we add more and more components from Bootstrap...</p>
   </div>
 </script>
 
-<script type="text/html" id="template-button">
+<script type="text/html" id="bootstrap-button">
 <button type="button" class="btn btn-default">Button Text</button>
 <a class="btn btn-info btn-xs">button text</a>
 </script>
 
-<script type="text/html" id="template-button-icon"> 
+<script type="text/html" id="bootstrap-button-icon"> 
   <a class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-search"></span> Search</a>
 </script>
 
-<script type="text/html" id="template-menu-tabs">
+<script type="text/html" id="bootstrap-menu-tabs">
 <ul class="nav nav-tabs"> 
   <li class="active"><a href="#">Home</a></li>
   <li><a href="#">About</a></li>
@@ -326,7 +301,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="template-menu-pills">
+<script type="text/html" id="bootstrap-menu-pills">
 <ul class="nav nav-pills"> 
   <li class="active"><a href="#">Home</a></li>
   <li><a href="#">About</a></li>
@@ -334,7 +309,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="template-menu-pills-stacked">
+<script type="text/html" id="bootstrap-menu-pills-stacked">
 <div class="col-md-3">
   <ul class="nav nav-pills nav-stacked"> 
     <li class="active"><a href="#">Home</a></li>
@@ -344,7 +319,7 @@
 </div>
 </script>
 
-<script type="text/html" id="template-submenus-tabs">
+<script type="text/html" id="bootstrap-submenus-tabs">
 <ul class="nav nav-tabs">
   <li class="active"><a href="#">Home</a></li>
   <li class="dropdown">
@@ -361,7 +336,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="template-submenus-pills">
+<script type="text/html" id="bootstrap-submenus-pills">
 <ul class="nav nav-pills nav-stacked">
   <li class="active"><a href="#">Home</a></li>
   <li class="dropdown">
@@ -378,7 +353,7 @@
 </ul>
 </script>
 
-<script type="text/html" id="template-navbar">
+<script type="text/html" id="bootstrap-navbar">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header"><a class="navbar-brand" href="#">website name</a>
@@ -406,21 +381,50 @@
 </nav>
 </script>
 
-<script type="text/html" id="template-centerblock">
+<script type="text/html" id="bootstrap-centerblock">
 <div class="center-block bg-info" style="max-width:300px;">
 center block content
 </div>
 </script>
 
-<script type="text/html" id="template-texthide">
+<script type="text/html" id="bootstrap-texthide">
 <div class="text-hide" style="max-width:300px;background-image:url(https://www.google.be/images/srpr/logo11w.png);height:200Px;">
 center block content
 </div>
 </script>
 
-<script type="text/html" id="template-close">
+<script type="text/html" id="bootstrap-close">
 <button type="button" class="close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 </script>
+
+<script type="text/html" id="template-sidebar">
+<ul class="nav">
+  <li class="active"><a href="#form-inline">form-inline</a></li>
+  <li><a href="#form">form</a></li>
+  <li><a href="#form-horizontal">form-horizontal</a></li>
+  <li><a href="#checkboxes">checkboxes</a></li>
+  <li><a href="#radios">radios</a></li>
+  <li><a href="#select">select</a></li>
+  <li><a href="#formstates">formstates</a></li>
+  <li><a href="#formstates-inline">formstates-inline</a></li>
+  <li><a href="#height-sizing">height-sizing</a></li>
+  <li><a href="#height-sizing-group">height-sizing-group</a></li>
+  <li><a href="#column-sizing">column-sizing</a></li>
+  <li><a href="#helpblock">helpblock</a></li>
+  <li><a href="#button">bootstrap-button</a></li>
+  <li><a href="#button-icon">bootstrap-button-icon</a></li>
+  <li><a href="#menu-tabs">bootstrap-menu-tabs</a></li>
+  <li><a href="#menu-pills">bootstrap-menu-pills</a></li>
+  <li><a href="#menu-pills-stacked">menu-pills-stacked</a></li>
+  <li><a href="#submenus-tabs">submenus-tabs</a></li>
+  <li><a href="#submenus-pills">submenus-pills</a></li>
+  <li><a href="#navbar">navbar</a></li>
+  <li><a href="#centerblock">centerblock</a></li>
+  <li><a href="#texthide">texthide</a></li>
+  <li><a href="#close">close</a></li>
+</ul>
+</script>
+<script type="text/javascript" src="views/sidebar.js"></script>
 <script type="text/javascript" src="router.js"></script>
 <script type="text/javascript" src="app.js"></script>
   </body>

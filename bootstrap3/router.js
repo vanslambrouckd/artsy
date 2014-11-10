@@ -4,6 +4,10 @@ var AppRouter = Backbone.Router.extend({
 	},
 	showTemplate: function(template) {
 		console.log(template);
-		$('#contentWrapper').html($('#template-'+template).html());
+sidebar = new SidebarView($('#sidebar'));
+		
+		$('#sidebar').html(sidebar.render().el);
+
+		$('#contentWrapper').html($('#bootstrap-'+template).html());
 	}
 });
