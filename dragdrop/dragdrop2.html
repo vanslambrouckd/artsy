@@ -38,6 +38,10 @@
       color:#4d4d4d;
       margin-left: 5px;
     }
+
+    .listContainerDroppable {
+      opacity:0.4;
+    }
     
     .list ul {
       list-style:none;
@@ -179,12 +183,19 @@
       start: function(event, ui) {
         droppableParent = $(this).parent();
         //console.log(droppableParent);
+        $(this).css('zIndex', 9999);
+
+        console.log(event);
       }
     });
 
     $('.listContainer').droppable({
+      tolerance:'intersect',
+      hoverClass: 'listContainerDroppable',
+      accept: '.list',
       drop: function(event, ui) {
         //console.log(ui.draggable);
+        ui.draggable.css('zIndex', '');
         if (ui.draggable.hasClass('list')) { //moet waarschijnlijk oplosbaar zijn via event.stopPropagation(), nog niet gevonden
           //console.log('drop executed');
           var draggable = ui.draggable;

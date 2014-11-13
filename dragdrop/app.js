@@ -23,30 +23,5 @@ var app = {
     },
     myHelper: function() {
         return '<div id="draggableHelper">I am a helper</div>';
-    },
-    dragEnterLeaveEvent: function (event){
-        object = $(event.target);
-        object.addClass('hidden');
-        $('#'+object.attr('data-toggle')).removeClass('hidden');
-    },
-
-    dragStartEvent: function (event) {
-            object = $(event.target);
-            object.addClass('objet-drag').removeClass('objet-hover');
-        },
-
-        dragStopEvent: function (event) {
-            object = $(event.target);
-            object.addClass('objet-hover').removeClass('objet-drag');
-        },
-
-    objectHover: function(event){
-        object = $(event.target);
-            object.addClass('hidden');
-        $('#'+object.attr('data-toggle')).removeClass('hidden');
-    },
-
-    dragDropEvent: function(event){
-        alert('banana');
-    }    
+    }
 }
