@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <style type="text/css">
+    .col {
+      width:30%;
+      float: left;
+      -moz-box-sizing:    border-box;   /* Firefox 1, probably can drop this */
+      -webkit-box-sizing: border-box;   /* Safari 3-4, also probably droppable */
+      box-sizing:        border-box;   /* Everything else */
+      height:600px;
+      background-color:red;
+      margin-left:1%;
+    }
+
+    #draggableHelper,
+    .item {
+      width:200px;
+      height:200px;
+    }
+
+    #draggableHelper {
+      background-color:yellow;
+    }
+
+    #draggable {
+      background-color: red;
+      float: left;
+    }
+
+    #droppable {
+      border:solid 1px #000;
+      float: right;
+    }
+
+    .hovered {
+      background-color:#ccc;
+    }
+    </style>
+    <!-- Optional: Include the jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+
+    <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="../js/underscore-min.js"></script>
+
+    <script src="../js/backbone-min.js"></script>
+  </head>
+  <body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2" id="sidebar">
+        
+      </div>
+      <div class="col-md-10" id="contentWrapper">
+          <div id="draggable" class="item">drag
+          </div>
+          <div id="droppable" class="item">drop</div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="app.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function() {  
+    app.init(); 
+  });
+  </script>
+  </body>
+</html>
