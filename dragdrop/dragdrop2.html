@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <style type="text/css">
+    #draggableHelper,
+    .item {
+      width:200px;
+      height:200px;
+    }
+
+    #draggableHelper {
+      background-color:yellow;
+    }
+
+    div.ui-draggable-dragging {
+      -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+      -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+      box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+      
+       -ms-transform: rotate(3deg); /* IE 9 */
+       -webkit-transform: rotate(3deg); /* Chrome, Safari, Opera */
+       transform: rotate(3deg);
+    }
+    
+    .listContainer {
+      width:260px;
+
+      flex:0 0 260px;
+      display: flex;
+      flex-direction:column;
+      background-color: #005485;
+      color:#4d4d4d;
+      margin-left: 5px;
+    }
+    
+    .list ul {
+      list-style:none;
+      
+      padding:0px;
+      margin:0px;
+      padding:4px 3px 3px;
+      background-color: #e3e3e3;
+    }
+
+    .list li,
+    li.placeholder {
+      background-color: #fff;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      padding:6px 8px 4px;
+      margin-bottom: 5px;
+      height: 60px;
+    }
+
+    li.placeholder {
+      background-color:#4d4d4d;
+    }
+
+    .listHeader {
+      font-size:15px;
+      word-wrap:break-word;
+      text-overflow:ellipsis;
+      background-color: #e3e3e3;
+      padding:3px 26px 2px 6px;
+    }
+
+    #gridContainer {
+      display:flex;
+      flex-direction:row;
+      align-items:stretch;
+    }
+
+    .listPlaceHolder {
+      width:100px;
+      height: 100px;
+      background-color: red;
+    }
+   
+    </style>
+    <!-- Optional: Include the jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+
+    <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="../js/underscore-min.js"></script>
+
+    <script src="../js/backbone-min.js"></script>
+  </head>
+  <body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" id="contentWrapper">
+          <div id="gridContainer">
+            <div class="listContainer">
+              <div class="list">
+                <div class="listHeader">
+                  Lijst 1
+                </div>
+                <ul>
+                    <li class="sortable-item">listitem1</li>
+                    <li class="sortable-item">listitem2</li>
+                    <li class="sortable-item">listitem3</li>
+                </ul>
+              </div>
+            </div>
+            <div class="listContainer">
+                Add a list...
+            </div>
+            <div class="listContainer">
+              <div class="list">
+                <div class="listHeader">
+                  Lijst 2
+                </div>
+                <ul>
+                    <li class="sortable-item">listitem1</li>
+                    <li class="sortable-item">listitem2</li>
+                    <li class="sortable-item">listitem3</li>
+                </ul>
+              </div>
+            </div>
+            <div class="listContainer">
+              <div class="list">
+                <div class="listHeader">
+                  Lijst 3
+                </div>
+                <ul>
+                    <li class="sortable-item">listitem1</li>
+                    <li class="sortable-item">listitem2</li>
+                    <li class="sortable-item">listitem3</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="listContainer">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="app.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function() {  
+    /*
+    resources http://devheart.org/examples/jquery-customizable-layout-using-drag-and-drop/1-getting-started-with-sortable-lists/index.html
+          
+
+    $('.listContainer').draggable({
+      revert: true
+      //helper: 'clone'
+    });
+    */
+    
+
+    /* sort listitems */
+    
+    $('.list > ul').sortable({
+      connectWith: '.list > ul',   
+      placeholder: 'placeholder',   
+    });
+    
+
+    var droppableParent; // = container from dragged item
+    $('.list').draggable({
+      start: function(event, ui) {
+        droppableParent = $(this).parent();
+        //console.log(droppableParent);
+      }
+    });
+
+    $('.listContainer').droppable({
+      drop: function(event, ui) {
+        //console.log(ui.draggable);
+        if (ui.draggable.hasClass('list')) { //moet waarschijnlijk oplosbaar zijn via event.stopPropagation(), nog niet gevonden
+          //console.log('drop executed');
+          var draggable = ui.draggable;
+          var draggableOffset = ui.draggable.offset();
+
+          var container = $(event.target);
+
+          //$('.list', event.target).appendTo(droppableParent);
+          
+          var $currentTargetItem = $(event.target).find('.list');
+          $currentTargetItem.appendTo(droppableParent);
+          container.append(draggable.css({ top:0, left:0, height: 'auto'}));
+        }
+      }
+    });
+  });
+  </script>
+  </body>
+</html>
