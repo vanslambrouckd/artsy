@@ -93,6 +93,10 @@
       background-color: red;
     }
    
+   .qtip {
+      max-width:900px !important;
+      width:900px !important;
+   }
     </style>
     <!-- Optional: Include the jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -163,47 +167,33 @@
       </div>
     </div>
   </div>
-<a id="test">test</a>
-  <script type="text/html" id="template-itemdialog">
-  <form>
-    <div>
-      <i class="fa fa-align-right"></i>
-    </div>
-    <div>
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputFile">File input</label>
-      <input type="file" id="exampleInputFile">
-      <p class="help-block">Example block-level help text here.</p>
-    </div>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox"> Check me out
-      </label>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-  </form>
-  <!--
-  <form method="post">
-    <div class="formrow">
-      <label>Email:</label>
-      <div class="data">
-        <input type="text" name="email" class="inputtext" />
+  <a class="tip">tip</a>
+<script type="text/html" id="template-itemdialog">
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10">
+        fdjsqklfjdqsmk
+      </div>
+      <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked"> 
+          <li><a href="#" class="tip" data-qtip-template="#template-members">members</a></li>
+          <li><a href="#">labels</a></li>
+          <li><a href="#">checklist</a></li>
+          <li><a href="#">due date</a></li>
+          <li><a href="#">attachment</a></li>
+        </ul>
       </div>
     </div>
-    <div class="formrow">
-      <label>Email:</label>
-      <div class="data">
-        <input type="text" name="email" class="inputtext" />
-      </div>
-    </div>
-  </form>
+  </div>
+</script>
+
+<script type="text/html" id="template-members">
+<div class="row">
+  <div class="col-md-10">
+    Search members
+  </div>
+</div>
 </script>
   <script type="text/javascript" src="app.js"></script>
 
@@ -234,7 +224,7 @@
         droppableParent = $(this).parent();
         //console.log(droppableParent);
         $(this).css('zIndex', 9999);
-        console.log(event);
+        //console.log(event);
       }
     });
     
@@ -243,39 +233,35 @@
 
     });
 
-    $('#test').qtip({
-      content: {
-          text: 'I get hidden on click'
-      },
-      show: {
-        event: 'click',
-        modal: {
-            on: true,
-            blur: true,
-            escape: true
-        },
-      },
-      hide: {
-          event: 'mousedown'
-      },
-      events: {
-          show: function(event, api) {
-              event.preventDefault(); // Stop it!
-              alert('ja')
-          }
-      },
-      position: {
-          target: 'mouse',
-          adjust: {
-              mouse: false
-          }
-      }
-  });
+    function bindQtips($container) {
+      //$('a.qtip', $container).each(function(index, val) {
+        //console.log($container);
+
+      /*
+      $('a.tip').each(function(index, val) {
+          console.log($(this));
+          var templateId = $(this).attr('data-qtip-template');
+          $(this).qtip({
+              content: {
+              text: 'fdsqf'
+            }            
+          });
+      });
+      */
+
+
+      $container.append('<a class="testje">fdjskql</a>');
+      $('a.tip').on('click', function(event) {
+          alert('ja');
+      });
+   }
+
+$('a.tip').on('click', function(evt) {
+    alert('ja');
+});
 
     $('.list li').qtip({
-      content: {
-        text: _.template($('#template-itemdialog').html())
-      },
+      content: $('#template-itemdialog').html(),
       show:  {
           event: 'click',
           solo: true
@@ -288,7 +274,9 @@
           */
         } ,
         style: { classes: 'qtip-bootstrap qtip-shadow', tip: false },
-        hide: 'click',
+        hide: {
+          event: 'unfocus'
+        },
         position: {
             my: 'top center',
             at: 'top center',
@@ -305,7 +293,54 @@
                 //api.destroy('true');
                 event.preventDefault();
                 $(api.target).removeClass('noClick');
-              }                
+
+              } 
+              var content = api.elements.content;
+              contentId = content.attr('id');
+              //console.log(content);
+              //alert('#'+contentId);
+              //bindQtips($(content));
+              /*
+              console.log(content.innerHTML);
+              console.log($('#'+contentId));
+              */
+              console.log(api.elements.content.find('a.tip'));
+              $.each(api.elements.content.find('a.tip'), function(index, val) {
+                console.log($(this));
+                $(this).qtip({
+                    content: {
+                      text: $('#template-members').html()
+                    },
+                    show:  {
+                      event: 'click'
+                    },
+                    hide: 'click',
+                    style: { classes: 'qtip-bootstrap qtip-shadow', tip: false },
+                });
+              });
+              /*
+              api.elements.content.find('a.tip').qtip({
+                content: 'LI Description',
+                show: 'click'
+             });
+*/
+
+              /*
+              $(content).on('click', '.tip', function(evt) {
+                  alert('ja');
+              });
+*/
+              /*
+              $('a.qtip', content).qtip({
+                  content: {
+                  text: $('template-members').html()
+                },
+                show:  {
+                  event: 'click',
+                },
+                hide: 'click'
+            }); 
+            */        
           }
         }
     });
