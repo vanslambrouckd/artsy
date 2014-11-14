@@ -6,6 +6,8 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
     <style type="text/css">
     #draggableHelper,
@@ -63,6 +65,10 @@
       height: 60px;
     }
 
+    .list li {
+      cursor: pointer;
+    }
+
     li.placeholder {
       background-color:#4d4d4d;
     }
@@ -97,6 +103,7 @@
     <script src="../js/underscore-min.js"></script>
 
     <script src="../js/backbone-min.js"></script>
+    <script src="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.js"></script>
   </head>
   <body>
 
@@ -119,6 +126,7 @@
                     <li class="sortable-item">listitem2</li>
                     <li class="sortable-item">listitem3</li>
                 </ul>
+                <a class="addCard">add a card...</a>
               </div>
             </div>
             <div class="listContainer">
@@ -155,28 +163,70 @@
       </div>
     </div>
   </div>
+<a id="test">test</a>
+  <script type="text/html" id="template-itemdialog">
+  <form>
+    <div>
+      <i class="fa fa-align-right"></i>
+    </div>
+    <div>
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputFile">File input</label>
+      <input type="file" id="exampleInputFile">
+      <p class="help-block">Example block-level help text here.</p>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"> Check me out
+      </label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+  <!--
+  <form method="post">
+    <div class="formrow">
+      <label>Email:</label>
+      <div class="data">
+        <input type="text" name="email" class="inputtext" />
+      </div>
+    </div>
+    <div class="formrow">
+      <label>Email:</label>
+      <div class="data">
+        <input type="text" name="email" class="inputtext" />
+      </div>
+    </div>
+  </form>
+</script>
   <script type="text/javascript" src="app.js"></script>
 
   <script type="text/javascript">
   $(document).ready(function() {  
     /*
     resources http://devheart.org/examples/jquery-customizable-layout-using-drag-and-drop/1-getting-started-with-sortable-lists/index.html
-          
-
-    $('.listContainer').draggable({
-      revert: true
-      //helper: 'clone'
-    });
     */
-    
-
     /* sort listitems */
-    
     $('.list > ul').sortable({
       connectWith: '.list > ul',   
-      placeholder: 'placeholder',   
+      placeholder: 'placeholder',
+      start: function(event, ui) {
+        //console.log(ui.item);
+        $(ui.item).addClass('noClick');
+        //destroyQtips();    
+        $('.list li').qtip('hide'); //hide all open qtips    
+      },
+      stop: function(event, ui) {
+        //enableQtips();
+        //$(ui.item).removeClass('noClick');
+      }
     });
-    
 
     var droppableParent; // = container from dragged item
     $('.list').draggable({
@@ -184,9 +234,84 @@
         droppableParent = $(this).parent();
         //console.log(droppableParent);
         $(this).css('zIndex', 9999);
-
         console.log(event);
       }
+    });
+    
+
+    $('.listContainer li').on('mouseover', function(event) {
+
+    });
+
+    $('#test').qtip({
+      content: {
+          text: 'I get hidden on click'
+      },
+      show: {
+        event: 'click',
+        modal: {
+            on: true,
+            blur: true,
+            escape: true
+        },
+      },
+      hide: {
+          event: 'mousedown'
+      },
+      events: {
+          show: function(event, api) {
+              event.preventDefault(); // Stop it!
+              alert('ja')
+          }
+      },
+      position: {
+          target: 'mouse',
+          adjust: {
+              mouse: false
+          }
+      }
+  });
+
+    $('.list li').qtip({
+      content: {
+        text: _.template($('#template-itemdialog').html())
+      },
+      show:  {
+          event: 'click',
+          solo: true
+          /*
+          ,modal: {
+            on: true,
+            blur: true,
+            escape: true
+          }
+          */
+        } ,
+        style: { classes: 'qtip-bootstrap qtip-shadow', tip: false },
+        hide: 'click',
+        position: {
+            my: 'top center',
+            at: 'top center',
+            target: $(window),
+            adjust: {
+              y: 60
+            }
+        },
+        events: {
+          show: function(event, api) {
+              //event.preventDefault();
+              if ($(api.target).hasClass('noClick')) {
+                //api.set('show.modal.escape', false);
+                //api.destroy('true');
+                event.preventDefault();
+                $(api.target).removeClass('noClick');
+              }                
+          }
+        }
+    });
+    
+    $(document).on('click', 'a.addCard', function(event) {
+
     });
 
     $('.listContainer').droppable({
