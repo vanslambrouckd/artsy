@@ -1,37 +1,33 @@
 var app = {
 	init: function() {
+		/*
 		var opts = {
-			el: $('#size .popup'),
-			container: $('#size'),
+			el: $('#jsMytasks').parent().find('.popup'),
 			naam: 'item1',
+			position: {
+				my: 'right'
+			}
 		}
 
-		var inst = $('#size > a i').Popupmenu(opts);
+		$('#jsMytasks > i').Popupmenu(opts);
 		//inst.show();
 		//console.log(inst.settings.naam);
 		
 		var opts = {
-			el: $('#size2 .popup'),
-			container: $('#size2'),
-			naam:'item2',
-			show: {
-				event: 'mouseenter'
-			}
+			el: $('#jsInbox').parent().find('.popup'),
+			naam: 'item1',
 		}
-		var inst2 = $('#size2 > a i').Popupmenu(opts);
-		
 
-		$('#size2 a').on('click', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			alert('ja');
+		$('#jsInbox > i').Popupmenu(opts);
+
+		*/
+		$('#jsDownload').Popupmenu({
+			el: $('#popupDownload'),
+			position: {
+				my: 'top center',
+				at: 'bottom center'
+			},
+			target: $('#menu')
 		});
-
-		var opts = {
-			//el: $('#jsMytasks').parent().find('.popup')
-			//container: $('#menu > ul > li:first-child');
-		}
-
-		var inst3 = $('#jsMytasks i').Popupmenu(opts);		
 	}
 }

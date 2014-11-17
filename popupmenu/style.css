@@ -71,6 +71,7 @@ ul.popupMenu li:last-child {
 	float: right;
 }
 
+
 #wrapperMenu {
 	width:300px;
 	padding: 20px;
@@ -78,4 +79,9 @@ ul.popupMenu li:last-child {
 	position: absolute;
 	top:0px;
 	bottom: 0px;
+}
+
+
+#popupDownload {
+	max-width:200px;
 }
