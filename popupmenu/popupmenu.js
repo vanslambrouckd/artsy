@@ -14,7 +14,10 @@
 		var obj = this;
 		//opties afgekeken van qtip2
 		var defaults = {
-			'region': 'right',
+			position: {
+				my: 'top left',
+				at: 'bottom right'
+			},
 			show: {
 				delay: 0,
 				event: 'click'
@@ -32,7 +35,7 @@
 		obj.settings = $.extend({}, defaults, options);
 		obj.settings.position.my = getPosition(obj.settings.position.my);
 		obj.settings.position.at = getPosition(obj.settings.position.at);
-		
+		//console.log($elem);
 
 		obj.$el = $elem; //element die event veroorzaakt
 		obj.$el.attr('data-popupmenu-id', obj.index);
@@ -68,6 +71,8 @@
 		var coords = obj.getCoords();
 
 		if (obj.settings.position.my.pos2 == 'left') {
+			//console.log(obj.settings.position);
+
 			if (obj.settings.position.at.pos2 == 'right') {
 				//OK
 				obj.$popup.css({
@@ -145,7 +150,7 @@
 		var coords = {};
 		coords.el = {};
 
-		coords.el.top = obj.$el.offset().top,
+		coords.el.top = obj.$el.offset().top;
 		coords.el.bottom = obj.$el.offset().top+obj.$el.outerHeight();
 		coords.el.vCenter = coords.el.top + (obj.$el.outerHeight()/2);
 		coords.el.left = obj.$el.offset().left;
@@ -153,11 +158,20 @@
 		coords.el.right = coords.el.left + coords.el.width;
 		
 		coords.popup = {};
-		coords.popup.top = obj.$popup.offset().top,		
+		coords.popup.top = obj.$popup.offset().top;	
 		coords.popup.bottom = obj.$popup.offset().top+obj.$popup.outerHeight();		
 		coords.popup.vCenter = coords.popup.top + (obj.$popup.outerHeight()/2);
 		coords.popup.left = obj.$popup.offset().left;
 		coords.popup.width = obj.$popup.outerWidth();
+		coords.popup.height = obj.$popup.outerHeight();
+
+		coords.target = {};
+		coords.target.top = obj.$target.offset().top;
+		coords.target.bottom = obj.$target.offset().top+obj.$target.outerHeight();		
+		coords.target.vCenter = coords.target.top + (obj.$target.outerHeight()/2);
+		coords.target.left = obj.$target.offset().left;
+		coords.target.width = obj.$target.outerWidth();
+		coords.target.height = obj.$target.outerHeight();
 		return coords;
 	}
 
@@ -165,41 +179,58 @@
 		/*
 		werkt volledig
 		*/
+		console.clear();
 		var obj = this;		
 		var coords = obj.getCoords();
+
+		console.log(obj.settings.position.my);
 				
 		if (obj.settings.position.my.pos1 == 'top') {
+			//VOLLEDIG OK
 			if (obj.settings.position.at.pos1 == 'top') {
-				//OK
+				//OK - 2
 				//top @ top
+				console.log(obj.$target);
+				var offsetTop = coords.target.top;
 				obj.$popup.css({
-					top: coords.el.top
+					top: offsetTop
 				});
 			} else if (obj.settings.position.at.pos1 == 'bottom') {
-				//OK
+				//OK - 2
 				//top @ bottom				
+				
+				//var offsetTop = coords.el.bottom;
+				var offsetTop = coords.target.top + coords.target.height;
+				console.log(offsetTop);
 				obj.$popup.css({
-					top: coords.el.bottom
+					top: offsetTop
 				});
 			} else if (obj.settings.position.at.pos1 == 'center') {
-				//OK
+				//OK2
 				//top @ center
+				var offsetTop = coords.target.top + coords.target.height/2;
 				obj.$popup.css({
-					top: coords.el.vCenter
+					//top: coords.el.vCenter
+					top: offsetTop
 				});
 			}
 		} else if(obj.settings.position.my.pos1 == 'bottom') {
 			if (obj.settings.position.at.pos1 == 'top') {
-				//OK
+				//OK - 2
 				//bottom @ top
+				var offsetTop = coords.target.top - coords.popup.height;
 				obj.$popup.css({
-					top: coords.el.top-obj.$popup.outerHeight()
+					//top: coords.el.top-obj.$popup.outerHeight()
+					top: offsetTop
 				});
 			} else if (obj.settings.position.at.pos1 == 'bottom') {
+				//HIER DOORDOEN
 				//OK
-				//bottom @ bottom				
+				//bottom @ bottom
+				var offsetTop = coords.target.bottom;		
 				obj.$popup.css({
-					top: coords.el.bottom-obj.$popup.outerHeight()
+					//top: coords.el.bottom-obj.$popup.outerHeight()
+					top: offsetTop
 				});
 			} else if (obj.settings.position.at.pos1 == 'center') {
 				//OK
@@ -231,6 +262,13 @@
 		}
 	}
 
+	Plugin.prototype.reposition = function() {
+		var obj = this;
+		obj.calcPosHor();
+		obj.calcPosVert();
+		//console.log('reposition');
+	}
+
 	Plugin.prototype.setPosition = function() {
 		var obj = this;
 		
@@ -252,9 +290,13 @@
 
 	Plugin.prototype.rebindEvents = function() {
 		var obj = this;
-		if (obj.settings.el.is(':visible')) {
+		//if (obj.settings.el.is(':visible')) {
+
+		if (obj.settings.el.css('visibility') != 'hidden') {
+		
 			obj.$el.off(obj.settings.show.event);
 			obj.$el.on(obj.settings.hide.event, function(event) {
+				//alert('hide');
 				/*
 				stopPropagation: zodat bvb de a click event niet uitgevoerd wordt wanneer je de menu toont via a > i 				
 				<a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
@@ -276,8 +318,11 @@
 	Plugin.prototype.hide = function() {
 		var obj = this;
 		obj.settings.el.delay(obj.settings.hide.delay);
-		obj.settings.el.hide();
+		//obj.settings.el.hide();
 		obj.settings.el.css('zIndex', 0);
+		obj.$popup.css({
+			visibility: 'hidden'
+		});
 	}
 
 	Plugin.prototype.show = function() {
@@ -292,8 +337,13 @@
 			obj.settings.el.css('zIndex', index+9000);
 		});
 
+		obj.setPosition();
+
 		//obj.settings.el.css('zIndex', 9999);
-		obj.settings.el.show();
+		//obj.settings.el.show();
+		obj.$popup.css({
+			visibility: 'visible'
+		});
 	}
 
 	/* plugin constructor */

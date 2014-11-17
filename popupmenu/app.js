@@ -20,14 +20,55 @@ var app = {
 
 		$('#jsInbox > i').Popupmenu(opts);
 
-		*/
-		$('#jsDownload').Popupmenu({
+		console.log($('#jsMeer')[0].getBoundingClientRect());
+
+		
+		console.log($('#jsMytasks').position());
+
+		console.log($('#jsInbox').position());
+
+		console.log($('#jsMeer').position());
+*/
+		var position_my = ['top', 'center', 'bottom'];
+		$.each(position_my, function(i, val) {
+			$('#position_my').append('<option value="'+val+'">'+val+'</option>');
+		});
+
+		var position_at = ['top', 'center', 'bottom'];
+		$.each(position_at, function(i, val) {
+			$('#position_at').append('<option value="'+val+'">'+val+'</option>');
+		});
+
+		$('#position_at').on('change', function(event) {
+			app.initPopups();
+		});
+
+		//app.initPopups();
+		
+		//console.log(inst);
+
+
+		$(window).resize(function() {
+			//inst.reposition();
+		});
+	},
+	initPopups: function() {
+		var inst = $('#jsDownload').Popupmenu({
 			el: $('#popupDownload'),
 			position: {
-				my: 'top center',
-				at: 'bottom center'
+				my: $('#position_my').val() + ' center',
+				at: $('#position_at').val() + ' center'
 			},
-			target: $('#menu')
+			target: $('#jsDownload')
+		});
+
+		$('#jsMeer').Popupmenu({
+			el: $('#popupMeer'),
+			target: $('#popupDownload'),
+			position: {
+				my: $('#position_my').val() + ' center',
+				at: $('#position_at').val() + ' center'
+			}
 		});
 	}
 }
