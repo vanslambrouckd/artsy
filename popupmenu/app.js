@@ -9,7 +9,7 @@ var app = {
 			}
 		}
 
-		$('#jsMytasks > i').Popupmenu(opts);
+		$('#jsMytasks > i').popup(opts);
 		//inst.show();
 		//console.log(inst.settings.naam);
 		
@@ -18,7 +18,7 @@ var app = {
 			naam: 'item1',
 		}
 
-		$('#jsInbox > i').Popupmenu(opts);
+		$('#jsInbox > i').popup(opts);
 
 		console.log($('#jsMeer')[0].getBoundingClientRect());
 
@@ -61,8 +61,8 @@ var app = {
 		$('#position_my_hor').val('left');
 				
 		$('.posSelect').on('change', function(event) {
-			$('#jsDownload').Popupmenu('destroy');
-			$('#jsMeer').Popupmenu('destroy');
+			$('#jsDownload').popup('destroy');
+			$('#jsMeer').popup('destroy');
 			app.initPopups();
 		});
 		
@@ -71,10 +71,15 @@ var app = {
 		$(window).resize(function() {
 			//inst.reposition();
 		});
+
+		$(document).on('click', function(event) {
+			console.log(event);
+			if (!$(event.target).hasClass('popup')) {
+				$('.popupLink').popup('hide');
+			}
+		});
 	},
 	initPopups: function() {
-		
-
 		var opts = {
 			el: $('#popupDownload'),
 			
@@ -83,9 +88,22 @@ var app = {
 				at: $('#position_at_vert').val() + ' ' + $('#position_at_hor').val()
 			},
 			
-			target: $('#jsDownload')
+			target: $('#jsDownload'),
+			show: {
+				event: 'click'
+			},
+			events: {
+				show: function(event) {
+					$('body').css('backgroundColor', 'red');
+				},
+				hide: function(event) {
+					$('#jsMeer').popup('hide');
+				}
+			}
 		}
-		var inst = $('#jsDownload').Popupmenu(opts);
+		var inst = $('#jsDownload').popup(opts);
+		//$('#jsDownload').popup('show');
+
 
 		var opts = {
 			el: $('#popupMeer'),
@@ -93,8 +111,15 @@ var app = {
 			position: {
 				my: $('#position_my_vert').val() + ' ' + $('#position_my_hor').val(),
 				at: $('#position_at_vert').val() + ' ' + $('#position_at_hor').val()
+			},
+			show: {
+				event: 'click'
+			},
+			hide: {
+				event: 'click'
 			}
 		}
-		$('#jsMeer').Popupmenu(opts);
+		var popupMeer = $('#jsMeer').popup(opts);
+		//$('#jsMeer').popup('show');	
 	}
 }

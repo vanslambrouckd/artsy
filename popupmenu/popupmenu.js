@@ -1,10 +1,11 @@
 /**
- * A jQuery plugin boilerplate.
- * Author: Jonathan Nicol @f6design
- */
+jquery plugin template via
+https://github.com/vanslambrouckd/artsy/blob/master/popupmenu/popupmenu.js
+gebaseerd op QTip2
+**/
 ;(function($) {
   // Change this to your plugin name.
-  var pluginName = 'Popupmenu';
+  var pluginName = 'popup';
  
   /**
    * Plugin object constructor.
@@ -14,7 +15,6 @@
     // References to DOM and jQuery versions of element.
     var el = element;
     var $el = $(element);
-    console.log($el);
 
     // Extend default options with those supplied by user.
     options = $.extend({}, $.fn[pluginName].defaults, options);
@@ -24,8 +24,6 @@
 
     var $popup = options.el;
     var $target = options.target;
-    console.log($popup);
-
 
     /**
      * Initialize plugin.
@@ -44,6 +42,7 @@
     function fooPublic() {
       // Code goes here...
       //console.log(options);
+      alert('foo');
     }
 
     function _getPosition(val) {
@@ -167,7 +166,6 @@
       werkt volledig
       */
       var coords = getCoords();
-          console.log(options.position);
       if (options.position.my.pos1 == 'top') {
         if (options.position.at.pos1 == 'top') {
           //top @ top
@@ -242,20 +240,18 @@
         <a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
         */
         event.stopPropagation();
-        hide();
-        rebindEvents();
+        hide(event);
       });
     } else {
       $el.off(options.show.event);
       $el.on(options.show.event, function(event) {
         event.stopPropagation();        
-        show();
-        rebindEvents();
+        show(event);
       });
     }
   }
 
-  function hide() {
+  function hide(event) {
     var obj = this;
     $popup.delay(options.hide.delay);
     //obj.settings.el.hide();
@@ -263,9 +259,15 @@
       'zIndex': 0,
       visibility: 'hidden'
     });
+
+    if (typeof options.events.hide !== 'undefined') {
+      options.events.hide(event);
+    }
+
+    rebindEvents();
   }
 
-  function show() {
+  function show(event) {
     /*
     var obj = this;
     var indexes = obj.getInstances();
@@ -279,12 +281,16 @@
     });
     */
     setPosition();
-
     //obj.settings.el.css('zIndex', 9999);
     //obj.settings.el.show();
     $popup.css({
       visibility: 'visible'
     });
+    
+    if (typeof options.events.show !== 'undefined') {
+      options.events.show(event);  
+    }
+    rebindEvents();
   }
  
     /**
@@ -309,9 +315,11 @@
       $el.each(function() {
         var el = this;
         var $el = $(this);
+
+        hide();
  
         // Add code to restore the element to its original state...
- 
+        console.log($el);
         hook('onDestroy');
         // Remove Plugin instance from the element.
         $el.removeData('plugin_' + pluginName);
@@ -340,7 +348,9 @@
     return {
       option: option,
       destroy: destroy,
-      fooPublic: fooPublic
+      fooPublic: fooPublic,
+      hide: hide,
+      show: show
     };
   }
  
@@ -365,6 +375,7 @@
           throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
         }
       });
+
       if (returnVal !== undefined){
         // If the method returned a value, return the value.
         return returnVal;
@@ -400,6 +411,14 @@
     show: {
       delay: 0,
       event: 'click'
+    },
+    events: {
+      hide: function(event) {
+
+      },
+      show: function(event) {
+
+      }
     },
     hide: {
       delay: 3000,
