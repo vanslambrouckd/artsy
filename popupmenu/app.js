@@ -31,44 +31,70 @@ var app = {
 */
 		var position_my = ['top', 'center', 'bottom'];
 		$.each(position_my, function(i, val) {
-			$('#position_my').append('<option value="'+val+'">'+val+'</option>');
+			$('#position_my_vert').append('<option value="'+val+'">'+val+'</option>');
 		});
+
+		$('#position_my_vert').val('top');
 
 		var position_at = ['top', 'center', 'bottom'];
 		$.each(position_at, function(i, val) {
-			$('#position_at').append('<option value="'+val+'">'+val+'</option>');
+			$('#position_at_vert').append('<option value="'+val+'">'+val+'</option>');
 		});
+		$('#position_at_vert').val('bottom');
 
-		$('#position_at').on('change', function(event) {
+		/*
+		$('#position_at_vert').on('change', function(event) {
 			app.initPopups();
 		});
+		*/
 
-		//app.initPopups();
+		var position_my_hor = ['left', 'center', 'right'];
+		var position_at_hor = ['left', 'center', 'right'];
+		$.each(position_at_hor, function(i, val) {
+			$('#position_at_hor').append('<option value="'+val+'">'+val+'</option>');
+		});
+		$('#position_at_hor').val('left');
+
+		$.each(position_my_hor, function(i, val) {
+			$('#position_my_hor').append('<option value="'+val+'">'+val+'</option>');
+		});
+		$('#position_my_hor').val('left');
+				
+		$('.posSelect').on('change', function(event) {
+			$('#jsDownload').Popupmenu('destroy');
+			$('#jsMeer').Popupmenu('destroy');
+			app.initPopups();
+		});
 		
-		//console.log(inst);
-
-
+		app.initPopups();
+		
 		$(window).resize(function() {
 			//inst.reposition();
 		});
 	},
 	initPopups: function() {
-		var inst = $('#jsDownload').Popupmenu({
-			el: $('#popupDownload'),
-			position: {
-				my: $('#position_my').val() + ' center',
-				at: $('#position_at').val() + ' center'
-			},
-			target: $('#jsDownload')
-		});
+		
 
-		$('#jsMeer').Popupmenu({
+		var opts = {
+			el: $('#popupDownload'),
+			
+			position: {
+				my: $('#position_my_vert').val() + ' ' + $('#position_my_hor').val(),
+				at: $('#position_at_vert').val() + ' ' + $('#position_at_hor').val()
+			},
+			
+			target: $('#jsDownload')
+		}
+		var inst = $('#jsDownload').Popupmenu(opts);
+
+		var opts = {
 			el: $('#popupMeer'),
 			target: $('#popupDownload'),
 			position: {
-				my: $('#position_my').val() + ' center',
-				at: $('#position_at').val() + ' center'
+				my: $('#position_my_vert').val() + ' ' + $('#position_my_hor').val(),
+				at: $('#position_at_vert').val() + ' ' + $('#position_at_hor').val()
 			}
-		});
+		}
+		$('#jsMeer').Popupmenu(opts);
 	}
 }

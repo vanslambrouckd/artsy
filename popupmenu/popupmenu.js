@@ -1,365 +1,411 @@
+/**
+ * A jQuery plugin boilerplate.
+ * Author: Jonathan Nicol @f6design
+ */
 ;(function($) {
-	/*
-	gebaseerd op 
-	https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
-	http://css-tricks.com/snippets/jquery/styled-popup-menu/
-	*/
-	var pluginName = 'Popupmenu'
+  // Change this to your plugin name.
+  var pluginName = 'Popupmenu';
+ 
+  /**
+   * Plugin object constructor.
+   * Implements the Revealing Module Pattern.
+   */
+  function Plugin(element, options) {
+    // References to DOM and jQuery versions of element.
+    var el = element;
+    var $el = $(element);
+    console.log($el);
 
-	$[pluginName] = {
-		lookup:[]
-	}
+    // Extend default options with those supplied by user.
+    options = $.extend({}, $.fn[pluginName].defaults, options);
 
-	function Plugin($elem, options) {
-		var obj = this;
-		//opties afgekeken van qtip2
-		var defaults = {
-			position: {
-				my: 'top left',
-				at: 'bottom right'
-			},
-			show: {
-				delay: 0,
-				event: 'click'
-			},
-			hide: {
-				delay: 3000,
-				event: 'click'
-				//event: 'mouseleave'
-			}
-		}
-		
-		if (!options.el) {
-			options.el = $($elem.attr('data-popupmenu-el'));	
-		}
-		obj.settings = $.extend({}, defaults, options);
-		obj.settings.position.my = getPosition(obj.settings.position.my);
-		obj.settings.position.at = getPosition(obj.settings.position.at);
-		//console.log($elem);
+    options.position.my = _getPosition(options.position.my);
+    options.position.at = _getPosition(options.position.at);
 
-		obj.$el = $elem; //element die event veroorzaakt
-		obj.$el.attr('data-popupmenu-id', obj.index);
-		obj.$popup = obj.settings.el;
-		obj.$target = obj.settings.target;
-		obj.setPosition();
+    var $popup = options.el;
+    var $target = options.target;
+    console.log($popup);
 
-		
-		obj.index = $[pluginName].lookup.push(obj)-1;
-		obj.rebindEvents();
 
-		var indexes = obj.getInstances();
-		
-		indexes.push(obj.index);
-		$('body').data('popupmenu-indexes', indexes);
-		//console.log(indexes);
+    /**
+     * Initialize plugin.
+     */
+    function init() {
+      // Add any initialization logic here...
+ 
+      hook('onInit');
+      setPosition();
+      rebindEvents();
+    }
+ 
+    /**
+     * Example Public Method
+     */
+    function fooPublic() {
+      // Code goes here...
+      //console.log(options);
+    }
 
-		function getPosition(val) {
-			var arr = val.split(' ');
-			return {
-				'pos1': arr[0],
-				'pos2': arr[1]
-			}
-		}
-	}
+    function _getPosition(val) {
+      var arr = val.split(' ');
+      return {
+        'pos1': arr[0],
+        'pos2': arr[1]
+      }
+    }
 
-	Plugin.prototype.calcPosHor = function() {
-		/*
-		werkt volledig
-		*/
-		var obj = this;
-		
-		var coords = obj.getCoords();
+    function setPosition() {    
+      calcPosHor();
+      calcPosVert();    
+    }
 
-		if (obj.settings.position.my.pos2 == 'left') {
-			//console.log(obj.settings.position);
+    function calcPosHor() {
+      /*
+      volledig OK
+      */     
+      var coords = getCoords();
 
-			if (obj.settings.position.at.pos2 == 'right') {
-				//OK
-				obj.$popup.css({
-					'left': coords.el.left+coords.el.width,
-					'right': 'auto'
-				});
-			} else if (obj.settings.position.at.pos2 == 'left') {
-				//OK
-				obj.$popup.css({ 
-					'left': coords.el.left,
-					'right': 'auto' 
-				});	
-			} else if (obj.settings.position.at.pos2 == 'center') {
-				//OK
-				// top left @ top center
-				obj.$popup.css({ 
-					'left': coords.el.left+(obj.$el.outerWidth()/2),
-					'right': 'auto' 
-				});	
-			}
-		} else if (obj.settings.position.my.pos2 == 'right') {
-			if (obj.settings.position.at.pos2 == 'left') {
-				//OK
-				obj.$popup.css({ 
-					'left': coords.el.left-obj.$popup.outerWidth(),
-					'right': 'auto' 
-				});	
-			} else if (obj.settings.position.at.pos2 == 'right') {
-				//OK
-				var offsetLeft = (coords.el.left+coords.el.width)-coords.popup.width;
-				obj.$popup.css({ 
-					'left': offsetLeft,
-					'right': 'auto' 
-				});	
-			} else if (obj.settings.position.at.pos2 == 'center') {
-				//OK
-				// top right @ top center
-				var offsetLeft = coords.el.left-coords.popup.width + (obj.$el.outerWidth()/2);
-				obj.$popup.css({ 
-					'left': offsetLeft,
-					'right': 'auto' 
-				});	
-			}
-		}  else if (obj.settings.position.my.pos2 == 'center') {
-			if (obj.settings.position.at.pos2 == 'left') {
-				//center @ left
-				var offsetLeft = coords.el.left - (coords.popup.width/2);
-				obj.$popup.css({ 
-					'left': offsetLeft,
-					'right': 'auto' 
-				});	
-			} else if (obj.settings.position.at.pos2 == 'right') {
-				//OK
-				//center @ right
-				var offsetLeft = coords.el.right - coords.popup.width/2;
-				obj.$popup.css({ 
-					'left': offsetLeft,
-					'right': 'auto' 
-				});	
-			} else if (obj.settings.position.at.pos2 == 'center') {
-				//OK
-				//center @ right
-				var offsetLeft = (coords.el.left + coords.el.width/2) - coords.popup.width/2;
-				obj.$popup.css({ 
-					'left': offsetLeft,
-					'right': 'auto' 
-				});	
-			} 
-		}
-	}
+      if (options.position.my.pos2 == 'left') {
+        if (options.position.at.pos2 == 'right') {
+          $popup.css({
+            'left': coords.target.left+coords.target.width,
+            'right': 'auto'
+          });
+        } else if (options.position.at.pos2 == 'left') {
+          $popup.css({ 
+            'left': coords.target.left,
+            'right': 'auto' 
+          }); 
+        } else if (options.position.at.pos2 == 'center') {
+          // top left @ top center
+          $popup.css({ 
+            'left': coords.target.left+(coords.target.width/2),
+            'right': 'auto' 
+          }); 
+        }
+      } else if (options.position.my.pos2 == 'right') {
+        if (options.position.at.pos2 == 'left') {
+          $popup.css({ 
+            'left': coords.el.left-coords.popup.width,
+            'right': 'auto' 
+          }); 
+        } else if (options.position.at.pos2 == 'right') {
+          var offsetLeft = (coords.target.left+coords.target.width)-coords.popup.width;
+          $popup.css({ 
+            'left': offsetLeft,
+            'right': 'auto' 
+          }); 
+        } else if (options.position.at.pos2 == 'center') {
+          // top right @ top center
+          var offsetLeft = coords.target.left+coords.target.width/2 - (coords.popup.width);
+          $popup.css({ 
+            'left': offsetLeft,
+            'right': 'auto' 
+          }); 
+        }
+      }  else if (options.position.my.pos2 == 'center') {
+        if (options.position.at.pos2 == 'left') {
+          //center @ left
+          var offsetLeft = coords.target.left - (coords.popup.width/2);
+          $popup.css({ 
+            'left': offsetLeft,
+            'right': 'auto' 
+          }); 
+        } else if (options.position.at.pos2 == 'right') {
+          //center @ right
+          var offsetLeft = coords.target.right - coords.popup.width/2
+          $popup.css({ 
+            'left': offsetLeft,
+            'right': 'auto' 
+          }); 
+        } else if (options.position.at.pos2 == 'center') {
+          //center @ right
+          var offsetLeft = (coords.target.left + coords.target.width/2) - coords.popup.width/2;
+          $popup.css({ 
+            'left': offsetLeft,
+            'right': 'auto' 
+          }); 
+        } 
+      }
+    }
 
-	Plugin.prototype.getCoords = function() {
-		var obj = this;
+    function getCoords() {
+      var obj = this;
 
-		var coords = {};
-		coords.el = {};
+      var coords = {};
+      coords.el = {};
 
-		coords.el.top = obj.$el.offset().top;
-		coords.el.bottom = obj.$el.offset().top+obj.$el.outerHeight();
-		coords.el.vCenter = coords.el.top + (obj.$el.outerHeight()/2);
-		coords.el.left = obj.$el.offset().left;
-		coords.el.width = obj.$el.outerWidth();
-		coords.el.right = coords.el.left + coords.el.width;
-		
-		coords.popup = {};
-		coords.popup.top = obj.$popup.offset().top;	
-		coords.popup.bottom = obj.$popup.offset().top+obj.$popup.outerHeight();		
-		coords.popup.vCenter = coords.popup.top + (obj.$popup.outerHeight()/2);
-		coords.popup.left = obj.$popup.offset().left;
-		coords.popup.width = obj.$popup.outerWidth();
-		coords.popup.height = obj.$popup.outerHeight();
+      coords.el.top = $el.offset().top;
+      coords.el.bottom = $el.offset().top+$el.outerHeight();
+      coords.el.vCenter = coords.el.top + ($el.outerHeight()/2);
+      coords.el.left = $el.offset().left;
+      coords.el.width = $el.outerWidth();
+      coords.el.right = coords.el.left + coords.el.width;
+      coords.el.height = $el.outerHeight();
+      
+      coords.popup = {};
+      coords.popup.top = $popup.offset().top; 
+      coords.popup.bottom = $popup.offset().top+$popup.outerHeight();   
+      coords.popup.vCenter = coords.popup.top + ($popup.outerHeight()/2);
+      coords.popup.left = $popup.offset().left;
+      coords.popup.width = $popup.outerWidth();
+      coords.popup.height = $popup.outerHeight();
 
-		coords.target = {};
-		coords.target.top = obj.$target.offset().top;
-		coords.target.bottom = obj.$target.offset().top+obj.$target.outerHeight();		
-		coords.target.vCenter = coords.target.top + (obj.$target.outerHeight()/2);
-		coords.target.left = obj.$target.offset().left;
-		coords.target.width = obj.$target.outerWidth();
-		coords.target.height = obj.$target.outerHeight();
-		return coords;
-	}
+      coords.target = {};
+      coords.target.top = $target.offset().top;
+      coords.target.bottom = $target.offset().top+$target.outerHeight();    
+      coords.target.vCenter = coords.target.top + ($target.outerHeight()/2);
+      coords.target.left = $target.offset().left;
+      coords.target.width = $target.outerWidth();
+      coords.target.right = coords.target.left + coords.target.width;
+      coords.target.height = $target.outerHeight();
+      return coords;
+    }
+    
+    function calcPosVert() {
+      /*
+      werkt volledig
+      */
+      var coords = getCoords();
+          console.log(options.position);
+      if (options.position.my.pos1 == 'top') {
+        if (options.position.at.pos1 == 'top') {
+          //top @ top
+          var offsetTop = coords.target.top;
+          $popup.css({
+            top: offsetTop
+          });
+        } else if (options.position.at.pos1 == 'bottom') {
+          //top @ bottom        
+          
+          var offsetTop = coords.target.top + coords.target.height;
+          $popup.css({
+            top: offsetTop
+          });
+        } else if (options.position.at.pos1 == 'center') {
+          //top @ center
+          var offsetTop = coords.target.top + coords.target.height/2;
+          $popup.css({
+            top: offsetTop
+          });
+        }
+      } else if(options.position.my.pos1 == 'bottom') {
+        if (options.position.at.pos1 == 'top') {
+          //bottom @ top
+          var offsetTop = coords.target.top - coords.popup.height;
+          $popup.css({
+            //top: coords.el.top-$popup.outerHeight()
+            top: offsetTop
+          });
+        } else if (options.position.at.pos1 == 'bottom') {
+          //bottom @ bottom
+          var offsetTop = coords.target.bottom-coords.popup.height;   
+          $popup.css({
+            top: offsetTop
+          });
+        } else if (options.position.at.pos1 == 'center') {
+          //bottom @ center
+          $popup.css({
+            top: coords.target.bottom - (coords.target.height/2) - coords.popup.height
+          });
+        }
+      } else if(options.position.my.pos1 == 'center') {
+        if (options.position.at.pos1 == 'top') {
+          //center @ top
+          $popup.css({
+            top: coords.el.top - (coords.popup.height) + coords.popup.height/2
+          });
+        } else if (options.position.at.pos1 == 'bottom') {
+          //center @ bottom       
+          $popup.css({
+            top: coords.el.bottom - coords.popup.height/2
+          });
+        } else if (options.position.at.pos1 == 'center') {
+          //center @ center
+          $popup.css({
+            top: (coords.el.top - coords.popup.height/2) + coords.el.height/2
+          });
+        }
+      }
+    }
 
-	Plugin.prototype.calcPosVert = function() {
-		/*
-		werkt volledig
-		*/
-		console.clear();
-		var obj = this;		
-		var coords = obj.getCoords();
+    function rebindEvents() {
+    //if (obj.settings.el.is(':visible')) {
 
-		console.log(obj.settings.position.my);
-				
-		if (obj.settings.position.my.pos1 == 'top') {
-			//VOLLEDIG OK
-			if (obj.settings.position.at.pos1 == 'top') {
-				//OK - 2
-				//top @ top
-				console.log(obj.$target);
-				var offsetTop = coords.target.top;
-				obj.$popup.css({
-					top: offsetTop
-				});
-			} else if (obj.settings.position.at.pos1 == 'bottom') {
-				//OK - 2
-				//top @ bottom				
-				
-				//var offsetTop = coords.el.bottom;
-				var offsetTop = coords.target.top + coords.target.height;
-				console.log(offsetTop);
-				obj.$popup.css({
-					top: offsetTop
-				});
-			} else if (obj.settings.position.at.pos1 == 'center') {
-				//OK2
-				//top @ center
-				var offsetTop = coords.target.top + coords.target.height/2;
-				obj.$popup.css({
-					//top: coords.el.vCenter
-					top: offsetTop
-				});
-			}
-		} else if(obj.settings.position.my.pos1 == 'bottom') {
-			if (obj.settings.position.at.pos1 == 'top') {
-				//OK - 2
-				//bottom @ top
-				var offsetTop = coords.target.top - coords.popup.height;
-				obj.$popup.css({
-					//top: coords.el.top-obj.$popup.outerHeight()
-					top: offsetTop
-				});
-			} else if (obj.settings.position.at.pos1 == 'bottom') {
-				//HIER DOORDOEN
-				//OK
-				//bottom @ bottom
-				var offsetTop = coords.target.bottom;		
-				obj.$popup.css({
-					//top: coords.el.bottom-obj.$popup.outerHeight()
-					top: offsetTop
-				});
-			} else if (obj.settings.position.at.pos1 == 'center') {
-				//OK
-				//bottom @ center
-				obj.$popup.css({
-					top: coords.el.bottom-obj.$popup.outerHeight()-(obj.$el.outerHeight()/2)
-				});
-			}
-		} else if(obj.settings.position.my.pos1 == 'center') {
-			if (obj.settings.position.at.pos1 == 'top') {
-				//OK
-				//center @ top
-				obj.$popup.css({
-					top: coords.el.top-obj.$popup.outerHeight()/2
-				});
-			} else if (obj.settings.position.at.pos1 == 'bottom') {
-				//OK
-				//center @ bottom				
-				obj.$popup.css({
-					top: coords.el.bottom-obj.$popup.outerHeight()/2
-				});
-			} else if (obj.settings.position.at.pos1 == 'center') {
-				//OK
-				//center @ center
-				obj.$popup.css({
-					top: coords.el.top + (obj.$el.outerHeight()/2) - (obj.$popup.outerHeight()/2)
-				});
-			}
-		}
-	}
+    if ($popup.css('visibility') != 'hidden') {
+    
+      $el.off(options.show.event);
+      $el.on(options.hide.event, function(event) {
+        //alert('hide');
+        /*
+        stopPropagation: zodat bvb de a click event niet uitgevoerd wordt wanneer je de menu toont via a > i        
+        <a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
+        */
+        event.stopPropagation();
+        hide();
+        rebindEvents();
+      });
+    } else {
+      $el.off(options.show.event);
+      $el.on(options.show.event, function(event) {
+        event.stopPropagation();        
+        show();
+        rebindEvents();
+      });
+    }
+  }
 
-	Plugin.prototype.reposition = function() {
-		var obj = this;
-		obj.calcPosHor();
-		obj.calcPosVert();
-		//console.log('reposition');
-	}
+  function hide() {
+    var obj = this;
+    $popup.delay(options.hide.delay);
+    //obj.settings.el.hide();
+    $popup.css({
+      'zIndex': 0,
+      visibility: 'hidden'
+    });
+  }
 
-	Plugin.prototype.setPosition = function() {
-		var obj = this;
-		
-		obj.calcPosHor();
-		obj.calcPosVert();		
-	}
-	
-	Plugin.prototype.getInstances = function() {
-		var indexes = $('body').data('popupmenu-indexes');
-		if (!indexes) {
-			indexes = [];
-		}
-		return indexes;
-	}
+  function show() {
+    /*
+    var obj = this;
+    var indexes = obj.getInstances();
+    indexes = _.without(indexes, obj.index);
+    indexes.unshift(obj.index);
+    obj.setInstances(indexes);
 
-	Plugin.prototype.setInstances = function(indexes) {
-		$('body').data('popupmenu-indexes', indexes);
-	}
+    $.each(indexes, function(i, index) {
+      var $el = $('data-popupmenu-id['+index+']');
+      obj.settings.el.css('zIndex', index+9000);
+    });
+    */
+    setPosition();
 
-	Plugin.prototype.rebindEvents = function() {
-		var obj = this;
-		//if (obj.settings.el.is(':visible')) {
-
-		if (obj.settings.el.css('visibility') != 'hidden') {
-		
-			obj.$el.off(obj.settings.show.event);
-			obj.$el.on(obj.settings.hide.event, function(event) {
-				//alert('hide');
-				/*
-				stopPropagation: zodat bvb de a click event niet uitgevoerd wordt wanneer je de menu toont via a > i 				
-				<a><i class="fa fa-chevron-circle-down"></i>My tasks</a>
-				*/
-				event.stopPropagation();
-				obj.hide();
-				obj.rebindEvents();
-			});
-		} else {
-			obj.$el.off(obj.settings.show.event);
-			obj.$el.on(obj.settings.show.event, function(event) {
-				event.stopPropagation();				
-				obj.show();
-				obj.rebindEvents();
-			});
-		}
-	}
-
-	Plugin.prototype.hide = function() {
-		var obj = this;
-		obj.settings.el.delay(obj.settings.hide.delay);
-		//obj.settings.el.hide();
-		obj.settings.el.css('zIndex', 0);
-		obj.$popup.css({
-			visibility: 'hidden'
-		});
-	}
-
-	Plugin.prototype.show = function() {
-		var obj = this;
-		var indexes = obj.getInstances();
-		indexes = _.without(indexes, obj.index);
-		indexes.unshift(obj.index);
-		obj.setInstances(indexes);
-
-		$.each(indexes, function(i, index) {
-			var $el = $('data-popupmenu-id['+index+']');
-			obj.settings.el.css('zIndex', index+9000);
-		});
-
-		obj.setPosition();
-
-		//obj.settings.el.css('zIndex', 9999);
-		//obj.settings.el.show();
-		obj.$popup.css({
-			visibility: 'visible'
-		});
-	}
-
-	/* plugin constructor */
-	$.fn[pluginName] = function(opts) {
-		var instance;
-		var $elem;
-
-		this.each(function(index, elem) {
-			$elem = $(elem);
-
-			if ($elem.data(pluginName) == null) {
-				instance = new Plugin($elem, opts);
-				$elem.data(pluginName, instance.index);
-				//instance.show();
-			}
-		});
-		return instance;
-	}
-})(window.jQuery);
+    //obj.settings.el.css('zIndex', 9999);
+    //obj.settings.el.show();
+    $popup.css({
+      visibility: 'visible'
+    });
+  }
+ 
+    /**
+     * Get/set a plugin option.
+     * Get usage: $('#el').demoplugin('option', 'key');
+     * Set usage: $('#el').demoplugin('option', 'key', value);
+     */
+    function option (key, val) {
+      if (val) {
+        options[key] = val;
+      } else {
+        return options[key];
+      }
+    }
+ 
+    /**
+     * Destroy plugin.
+     * Usage: $('#el').demoplugin('destroy');
+     */
+    function destroy() {
+      // Iterate over each matching element.
+      $el.each(function() {
+        var el = this;
+        var $el = $(this);
+ 
+        // Add code to restore the element to its original state...
+ 
+        hook('onDestroy');
+        // Remove Plugin instance from the element.
+        $el.removeData('plugin_' + pluginName);
+      });
+    }
+ 
+    /**
+     * Callback hooks.
+     * Usage: In the defaults object specify a callback function:
+     * hookName: function() {}
+     * Then somewhere in the plugin trigger the callback:
+     * hook('hookName');
+     */
+    function hook(hookName) {
+      if (options[hookName] !== undefined) {
+        // Call the user defined function.
+        // Scope is set to the jQuery element we are operating on.
+        options[hookName].call(el);
+      }
+    }
+ 
+    // Initialize the plugin instance.
+    init();
+ 
+    // Expose methods of Plugin we wish to be public.
+    return {
+      option: option,
+      destroy: destroy,
+      fooPublic: fooPublic
+    };
+  }
+ 
+  /**
+   * Plugin definition.
+   */
+  $.fn[pluginName] = function(options) {
+    // If the first parameter is a string, treat this as a call to
+    // a public method.
+    if (typeof arguments[0] === 'string') {
+      var methodName = arguments[0];
+      var args = Array.prototype.slice.call(arguments, 1);
+      var returnVal;
+      this.each(function() {
+        // Check that the element has a plugin instance, and that
+        // the requested public method exists.
+        if ($.data(this, 'plugin_' + pluginName) && typeof $.data(this, 'plugin_' + pluginName)[methodName] === 'function') {
+          // Call the method of the Plugin instance, and Pass it
+          // the supplied arguments.
+          returnVal = $.data(this, 'plugin_' + pluginName)[methodName].apply(this, args);
+        } else {
+          throw new Error('Method ' +  methodName + ' does not exist on jQuery.' + pluginName);
+        }
+      });
+      if (returnVal !== undefined){
+        // If the method returned a value, return the value.
+        return returnVal;
+      } else {
+        // Otherwise, returning 'this' preserves chainability.
+        return this;
+      }
+    // If the first parameter is an object (options), or was omitted,
+    // instantiate a new instance of the plugin.
+    } else if (typeof options === "object" || !options) {
+      return this.each(function() {
+        // Only allow the plugin to be instantiated once.
+        if (!$.data(this, 'plugin_' + pluginName)) {
+          // Pass options to Plugin constructor, and store Plugin
+          // instance in the elements jQuery data object.
+          $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+        }
+      });
+    }
+  };
+ 
+  // Default plugin options.
+  // Options can be overwritten when initializing plugin, by
+  // passing an object literal, or after initialization:
+  // $('#el').demoplugin('option', 'key', value);
+  $.fn[pluginName].defaults = {
+    onInit: function() {},
+    onDestroy: function() {},
+    position: {
+      my: 'top left',
+      at: 'bottom right'
+    },
+    show: {
+      delay: 0,
+      event: 'click'
+    },
+    hide: {
+      delay: 3000,
+      event: 'click'
+      //event: 'mouseleave'
+    }
+  };
+ 
+})(jQuery);
